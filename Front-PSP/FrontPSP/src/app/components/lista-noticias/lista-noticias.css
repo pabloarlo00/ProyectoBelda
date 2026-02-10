@@ -1,0 +1,78 @@
+/* Espaciado general */
+.news-wrapper {
+  padding-bottom: 5rem;
+}
+
+/* Efecto Hover en Tarjetas */
+.news-card {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-radius: 16px !important;
+  overflow: hidden;
+}
+
+.news-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.12) !important;
+}
+
+/* Contenedor de Imágenes/Carousel */
+.news-image-box {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+/* Ajuste de imagen para carrusel */
+.object-fit-cover {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Badge de contador de imágenes (Unificado) */
+.image-count-badge {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  backdrop-filter: blur(4px);
+  z-index: 10;
+}
+
+/* Placeholder cuando no hay imagen */
+.no-image-placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dee2e6;
+}
+
+/* Personalización de flechas del Carrusel */
+.carousel-control-prev, 
+.carousel-control-next {
+  width: 15%;
+  opacity: 0; /* Ocultas por defecto */
+  transition: opacity 0.3s ease;
+}
+
+/* Mostrar flechas solo al pasar el ratón por la tarjeta */
+.news-card:hover .carousel-control-prev,
+.news-card:hover .carousel-control-next {
+  opacity: 1;
+}
+
+/* Tipografía y detalles */
+.ls-1 {
+  letter-spacing: 1px;
+}
+
+.btn-sm {
+  font-weight: 500;
+  padding: 0.4rem 1rem;
+}

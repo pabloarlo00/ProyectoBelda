@@ -1,0 +1,33 @@
+/* Estilo para las miniaturas del formulario */
+.img-thumbnail {
+  border: none;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+  object-fit: cover; /* Asegura que no se deformen */
+}
+
+.img-thumbnail:hover {
+  transform: scale(1.05);
+}
+
+/* Mejora para el buscador de iconos */
+.dropdown-menu {
+  display: none;
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+}
+
+.dropdown-menu.show {
+  display: block;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilo para los botones de iconos en la cuadrícula */
+.btn-outline-primary:hover i {
+  color: white;
+}

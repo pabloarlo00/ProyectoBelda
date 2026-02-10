@@ -1,0 +1,7 @@
+{
+  "name": "AppSGE",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

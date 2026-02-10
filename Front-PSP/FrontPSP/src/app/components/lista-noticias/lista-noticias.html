@@ -1,0 +1,172 @@
+<div class="container mt-5 news-wrapper">
+  <header class="d-flex justify-content-between align-items-end mb-5 border-bottom pb-4">
+    <div>
+      <h1 class="display-4 fw-bold text-dark mb-0">Portal de Noticias</h1>
+      <p class="text-muted fs-5 mb-0">Gestión de noticias de Pablo Arnau</p>
+    </div>
+    <button routerLink="/nueva" class="btn btn-primary btn-lg rounded-pill shadow-sm px-4">
+      <i class="bi bi-plus-circle me-2"></i>Nueva Noticia
+    </button>
+  </header>
+
+  <div class="row">
+    @for (noticia of noticias; track noticia._id) {
+    <div class="col-md-6 col-lg-4 mb-4">
+      <article class="card h-100 news-card border-0 shadow-sm">
+        <div class="news-image-box">
+          @if (noticia.imagenes && noticia.imagenes.length > 0) {
+          <div
+            [id]="'carousel-' + noticia._id"
+            class="carousel slide carousel-fade h-100"
+            data-bs-ride="false"
+          >
+            @if (noticia.imagenes.length > 1) {
+            <div class="carousel-indicators">
+              @for (img of noticia.imagenes; track $index) {
+              <button
+                type="button"
+                [attr.data-bs-target]="'#carousel-' + noticia._id"
+                [attr.data-bs-slide-to]="$index"
+                [class.active]="$index === 0"
+                aria-current="true"
+              ></button>
+              }
+            </div>
+            }
+
+            <div class="carousel-inner h-100">
+              @for (img of noticia.imagenes; track $index) {
+              <div class="carousel-item h-100" [class.active]="$index === 0">
+                <img
+                  [src]="img"
+                  class="d-block w-100 h-100 object-fit-cover"
+                  [alt]="noticia.titulo"
+                />
+              </div>
+              }
+            </div>
+
+            @if (noticia.imagenes.length > 1) {
+            <button
+              class="carousel-control-prev"
+              type="button"
+              [attr.data-bs-target]="'#carousel-' + noticia._id"
+              data-bs-slide="prev"
+            >
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Anterior</span>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              [attr.data-bs-target]="'#carousel-' + noticia._id"
+              data-bs-slide="next"
+            >
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Siguiente</span>
+            </button>
+            }
+
+            <span class="image-count-badge">
+              <i class="bi bi-images me-1"></i>{{ noticia.imagenes.length }}
+            </span>
+          </div>
+          } @else {
+          <div class="no-image-placeholder h-100">
+            <i class="bi bi-newspaper display-2 text-secondary"></i>
+          </div>
+          }
+        </div>
+
+        <div class="card-body d-flex flex-column">
+          <div class="d-flex align-items-center mb-2">
+            <i [class]="noticia.iconoSeccion" class="text-primary me-2 fs-5"></i>
+            <span class="text-uppercase fw-bold ls-1 small text-primary">{{
+              noticia.seccion
+            }}</span>
+          </div>
+
+          <h3 class="card-title h4 fw-bold text-dark mb-2">{{ noticia.titulo }}</h3>
+          <h6 class="card-subtitle mb-3 text-secondary lh-base">{{ noticia.subtitulo }}</h6>
+          <div
+            class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top small text-muted"
+          >
+            <span><i class="bi bi-person-circle me-1"></i> {{ noticia.autor }}</span>
+            <span
+              ><i class="bi bi-calendar3 me-1"></i> {{ noticia.fecha | date : 'mediumDate' }}</span
+            >
+          </div>
+        </div>
+
+        <div class="card-footer bg-white border-0 d-flex gap-2 pb-3 px-3">
+          <button
+            [routerLink]="['/editar', noticia._id]"
+            class="btn btn-outline-dark btn-sm flex-grow-1 rounded-pill"
+          >
+            <i class="bi bi-pencil me-1"></i> Editar
+          </button>
+          <button
+            class="btn btn-outline-danger btn-sm rounded-pill"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteModal"
+            (click)="prepararBorrado(noticia)"
+          >
+            <i class="bi bi-trash3 me-1"></i> Borrar
+          </button>
+        </div>
+      </article>
+    </div>
+    } @empty {
+    <div class="col-12 text-center py-5">
+      <div class="empty-state-icon mb-4">
+        <i class="bi bi-journals display-1 text-light-emphasis"></i>
+      </div>
+      <h2 class="text-muted">Parece que no hay noticias todavía</h2>
+      <p class="text-secondary">Sé el primero en informar al mundo.</p>
+      <button routerLink="/nueva" class="btn btn-primary mt-3">Redactar mi primera noticia</button>
+    </div>
+    }
+  </div>
+
+  <div
+    class="modal fade"
+    id="deleteModal"
+    tabindex="-1"
+    aria-labelledby="deleteModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="deleteModalLabel">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar eliminación
+          </h5>
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body p-4 text-center">
+          <p class="fs-5 mb-1">¿Estás seguro de que quieres eliminar esta noticia?</p>
+          <strong class="text-dark">"{{ noticiaSeleccionada?.titulo }}"</strong>
+          <p class="text-muted small mt-3">
+            Esta acción no se puede deshacer y se borrará permanentemente de la base de datos.
+          </p>
+        </div>
+        <div class="modal-footer border-0 pb-4 justify-content-center">
+          <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancelar</button>
+          <button
+            type="button"
+            class="btn btn-danger px-4 shadow-sm"
+            (click)="confirmarEliminar()"
+            data-bs-dismiss="modal"
+          >
+            Sí, eliminar definitivamente
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
