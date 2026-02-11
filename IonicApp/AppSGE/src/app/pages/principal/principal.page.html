@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Noticias</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding-bottom">
+  @for (item of notices; track item._id) {
+  <ion-card class="news-card">
+    @if (item.imagenes && item.imagenes.length > 0) {
+    <img [src]="item.imagenes[0]" [alt]="item.titulo" class="news-img" />
+    }
+
+    <ion-card-header>
+      <div class="header-meta">
+        <ion-badge color="secondary">{{ item.seccion }}</ion-badge>
+        <ion-note>{{ item.fecha | date:'dd/MM/yyyy' }}</ion-note>
+      </div>
+      <ion-card-title>{{ item.titulo }}</ion-card-title>
+      <ion-card-subtitle>{{ item.subtitulo }}</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="footer-info">
+        <ion-text color="medium"
+          >Por: <strong>{{ item.autor }}</strong></ion-text
+        >
+      </div>
+    </ion-card-content>
+  </ion-card>
+  }
+
+  <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Cargando más noticias..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>
