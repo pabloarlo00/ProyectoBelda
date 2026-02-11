@@ -1,0 +1,23 @@
+# Entornos virtuales y dependencias
+node_modules/
+venv/
+.env
+bin/
+obj/
+
+# Archivos de configuración de IDEs
+.idea/
+.vscode/
+*.suo
+*.user
+
+# Archivos compilados y temporales
+dist/
+build/
+out/
+*.log
+
+# CLAVES Y SECRETOS (Asegúrate de que tus archivos de claves coincidan con estos nombres)
+config.json
+secrets.yaml
+credentials.xml

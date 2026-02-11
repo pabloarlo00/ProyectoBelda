@@ -1,11 +1,8 @@
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { NoticiasModule } from './noticias/noticias.module';
-
+import { Module } from "@nestjs/common";
+import { MongooseModule } from "@nestjs/mongoose";
+import { NoticiasModule } from "./noticias/noticias.module";
+import "dotenv/config";
 @Module({
-    imports: [
-        MongooseModule.forRoot('mongodb+srv://pabloarlo00_db_user:BGFxjpdgzFxJAmmF@cluster0.xztdr3k.mongodb.net/?appName=Cluster0'),
-        NoticiasModule,
-    ],
+  imports: [MongooseModule.forRoot(process.env.MONGODB_URI), NoticiasModule],
 })
 export class AppModule {}
