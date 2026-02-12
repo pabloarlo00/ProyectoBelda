@@ -15,4 +15,10 @@ export class Service {
   getAllNotices(): Observable<Noticia[]> {
     return this.http.get<Noticia[]>(environment.baseUrl + '/');
   }
+
+  buscarNoticias(termino: string): Observable<Noticia[]> {
+    return this.http.get<Noticia[]>(
+      `${environment.baseUrl}/buscar?q=${termino}`,
+    );
+  }
 }

@@ -25,7 +25,7 @@ import {
 import { Service } from 'src/app/services/service';
 import { Noticia } from 'src/app/common/noticia';
 import { IonInfiniteScrollCustomEvent } from '@ionic/core';
-
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 @Component({
   selector: 'app-principal',
   templateUrl: './principal.page.html',
@@ -43,12 +43,12 @@ import { IonInfiniteScrollCustomEvent } from '@ionic/core';
     IonBadge,
     IonNote,
     IonCardTitle,
-    IonCardSubtitle,
     IonCardContent,
     IonText,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PrincipalPage implements OnInit {
   private noticiaService: Service = inject(Service);
