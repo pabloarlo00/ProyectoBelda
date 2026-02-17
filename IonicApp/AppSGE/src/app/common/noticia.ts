@@ -8,4 +8,11 @@ export interface Noticia {
   autor: string;
   fecha?: Date | string;
   contenido: string;
+  comentarios: Comentario[];
+}
+
+export interface Comentario {
+  nombre: string;
+  email: string;
+  comentario: string;
 }

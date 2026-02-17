@@ -13,6 +13,12 @@ export const routes: Routes = [
   },
   {
     path: 'buscar',
-    loadComponent: () => import('./pages/buscar/buscar.page').then( m => m.BuscarPage)
+    loadComponent: () =>
+      import('./pages/buscar/buscar.page').then((m) => m.BuscarPage),
+  },
+  {
+    path: 'detalle/:id',
+    loadComponent: () =>
+      import('./pages/detalle/detalle.page').then((m) => m.DetallePage),
   },
 ];

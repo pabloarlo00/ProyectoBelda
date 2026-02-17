@@ -1,0 +1,20 @@
+<ion-menu side="start" menuId="primerMenu" contentId="principal">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menú Principal</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      @for (component of componentes; track component.nombre) {
+        <ion-menu-toggle>
+          <ion-item [routerLink]="component.ruta" detail="true" lines="none">
+            <ion-icon slot="start" [name]="component.icono"></ion-icon>
+            <ion-label>{{ component.nombre }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      }
+    </ion-list>
+  </ion-content>
+</ion-menu>

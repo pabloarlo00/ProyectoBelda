@@ -58,9 +58,9 @@ export class FormularioNoticiaComponent implements OnInit {
     autor: ['', Validators.required],
     seccion: ['', Validators.required],
     iconoSeccion: ['', Validators.required],
-    imagenes: this.fb.array([], [Validators.required, Validators.minLength(3)]),  });
+    imagenes: this.fb.array([], [Validators.required, Validators.minLength(3)]),
+  });
 
-  // Getter para acceder al array de imágenes de forma fácil desde el HTML
   get imagenes() {
     return this.form.get('imagenes') as FormArray;
   }
@@ -82,7 +82,7 @@ export class FormularioNoticiaComponent implements OnInit {
 
   get iconosFiltrados() {
     return this.iconosBootstrap.filter((icon) =>
-      icon.toLowerCase().includes(this.filtroIcono.toLowerCase())
+      icon.toLowerCase().includes(this.filtroIcono.toLowerCase()),
     );
   }
 

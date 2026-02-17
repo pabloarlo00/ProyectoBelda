@@ -4,28 +4,22 @@ import { FormsModule } from '@angular/forms';
 import {
   InfiniteScrollCustomEvent,
   IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
   LoadingController,
-  IonList,
-  IonItem,
-  IonLabel,
   IonCard,
   IonCardHeader,
   IonBadge,
   IonNote,
   IonCardTitle,
-  IonCardSubtitle,
   IonCardContent,
   IonText,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
+  NavController,
 } from '@ionic/angular/standalone';
 import { Service } from 'src/app/services/service';
 import { Noticia } from 'src/app/common/noticia';
-import { IonInfiniteScrollCustomEvent } from '@ionic/core';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-principal',
   templateUrl: './principal.page.html',
@@ -33,9 +27,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
   standalone: true,
   imports: [
     IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
     CommonModule,
     FormsModule,
     IonCard,
@@ -47,6 +38,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
     IonText,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
+    RouterLink,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -55,7 +47,10 @@ export class PrincipalPage implements OnInit {
 
   notices: Noticia[] = [];
 
-  constructor(private loadingCtrl: LoadingController) {}
+  constructor(
+    private loadingCtrl: LoadingController,
+    private navCtrl: NavController,
+  ) {}
 
   ngOnInit() {
     this.loadAllNotices();

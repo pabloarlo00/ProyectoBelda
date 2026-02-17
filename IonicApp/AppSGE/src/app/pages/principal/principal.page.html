@@ -1,12 +1,24 @@
-<ion-header [translucent]="true">
+<ion-header class="ion-no-border">
   <ion-toolbar color="primary">
-    <ion-title>Noticias</ion-title>
+    <div
+      class="position-absolute start-0 top-0 w-100 h-100 d-flex justify-content-center align-items-center"
+    >
+      <ion-avatar class="shadow-sm">
+        <ion-img src="assets/icon/favicon.png" alt="Logo"></ion-img>
+      </ion-avatar>
+    </div>
+
+    <ion-buttons slot="end">
+      <ion-menu-button menu="primerMenu"></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
-
 <ion-content [fullscreen]="true">
   @for (item of notices; track item._id) {
-  <ion-card class="mb-4 shadow-sm border-0">
+  <ion-card
+    [routerLink]="['/detalle', item._id]"
+    class="mb-4 shadow-sm border-0"
+  >
     @if (item.imagenes && item.imagenes.length > 0) {
     <swiper-container pagination="true" class="bg-dark">
       @for (foto of item.imagenes; track $index) {

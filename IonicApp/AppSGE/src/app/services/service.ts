@@ -21,4 +21,15 @@ export class Service {
       `${environment.baseUrl}/buscar?q=${termino}`,
     );
   }
+
+  getNoticiaById(id: string): Observable<Noticia> {
+    return this.http.get<Noticia>(`${environment.baseUrl}/${id}`);
+  }
+
+  postComentario(id: string, comentario: any): Observable<Noticia> {
+    return this.http.patch<Noticia>(
+      `${environment.baseUrl}/${id}/comentarios`,
+      comentario,
+    );
+  }
 }

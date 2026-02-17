@@ -1,31 +1,31 @@
-import { IsString, IsArray, IsOptional, IsNotEmpty } from 'class-validator';
+import { IsString, IsArray, IsOptional, IsNotEmpty } from "class-validator";
 
 export class CrearNoticiaDto {
-    @IsArray()
-    @IsString({ each: true })
-    imagenes: string[];
+  @IsArray()
+  @IsString({ each: true })
+  imagenes: string[];
 
-    @IsString()
-    @IsNotEmpty()
-    titulo: string;
+  @IsString()
+  @IsNotEmpty()
+  titulo: string;
 
-    @IsString()
-    @IsOptional()
-    subtitulo: string;
+  @IsString()
+  @IsOptional()
+  subtitulo: string;
 
-    @IsString()
-    @IsNotEmpty()
-    seccion: string;
+  @IsString()
+  @IsNotEmpty()
+  seccion: string;
 
-    @IsString()
-    @IsOptional()
-    iconoSeccion: string;
+  @IsString()
+  @IsOptional()
+  iconoSeccion: string;
 
-    @IsString()
-    @IsNotEmpty()
-    autor: string;
+  @IsString()
+  @IsNotEmpty()
+  autor: string;
 
-    @IsString()
-    @IsNotEmpty()
-    contenido: string;
+  @IsString()
+  @IsNotEmpty()
+  contenido: string;
 }

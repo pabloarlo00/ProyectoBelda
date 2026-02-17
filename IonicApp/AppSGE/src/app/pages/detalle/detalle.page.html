@@ -1,0 +1,113 @@
+<app-header></app-header>
+
+<ion-content class="ion-padding">
+  @if (noticia?.imagenes && noticia?.imagenes!.length > 0) {
+  <swiper-container pagination="true" class="bg-dark mb-3">
+    @for (foto of noticia?.imagenes; track $index) {
+    <swiper-slide>
+      <ion-img
+        [src]="foto"
+        class="vw-100 object-fit-cover"
+        style="height: 250px"
+      >
+      </ion-img>
+    </swiper-slide>
+    }
+  </swiper-container>
+  }
+
+  <h2 class="fw-bold">{{ noticia?.titulo }}</h2>
+  <p class="text-muted">{{ noticia?.subtitulo }}</p>
+
+  <ion-chip color="primary">
+    <i [class]="noticia?.iconoSeccion" class="bi"></i>
+    <ion-label class="ms-2">{{ noticia?.seccion }}</ion-label>
+  </ion-chip>
+
+  <div class="mt-2 mb-3">
+    <ion-note color="medium">
+      Por: <strong>{{ noticia?.autor }}</strong> | {{ noticia?.fecha |
+      date:'dd/MM/yyyy' }}
+    </ion-note>
+  </div>
+
+  <ion-accordion-group class="mt-3">
+    <ion-accordion value="noticiaContenido">
+      <ion-item slot="header" color="light">
+        <ion-label>Contenido</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">{{ noticia?.contenido }}</div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <ion-list class="mt-4">
+    <ion-list-header>
+      <ion-label>Comentarios</ion-label>
+      <ion-button id="open-modal" fill="clear" expand="block">
+        Añadir
+      </ion-button>
+    </ion-list-header>
+
+    @for (c of noticia?.comentarios; track $index) {
+    <ion-item>
+      <ion-avatar slot="start">
+        <ion-icon name="person-circle-outline" size="large"></ion-icon>
+      </ion-avatar>
+      <ion-label>
+        <h3>{{ c.nombre }}</h3>
+        <h3>{{c.email}}</h3>
+        <p>{{ c.comentario }}</p>
+      </ion-label>
+    </ion-item>
+    }
+  </ion-list>
+
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <form #formulario="ngForm">
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-buttons slot="start">
+              <ion-button (click)="cancelar()">Cancelar</ion-button>
+            </ion-buttons>
+            <ion-title>Nuevo Comentario</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="confirmar(formulario.value)" [strong]="true"
+                >Confirmar</ion-button
+              >
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-padding">
+          <ion-item>
+            <ion-label position="stacked">Nombre</ion-label>
+            <ion-input
+              [(ngModel)]="nuevoComentario.nombre"
+              name="nombre"
+              type="text"
+              placeholder="Mínimo 3 caracteres"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Email</ion-label>
+            <ion-input
+              [(ngModel)]="nuevoComentario.email"
+              name="email"
+              type="email"
+              placeholder="aa@aa.aa"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Comentario</ion-label>
+            <ion-textarea
+              [(ngModel)]="nuevoComentario.comentario"
+              name="comentario"
+              placeholder="Mínimo 2 caracteres"
+            ></ion-textarea>
+          </ion-item>
+        </ion-content>
+      </form>
+    </ng-template>
+  </ion-modal>
+</ion-content>

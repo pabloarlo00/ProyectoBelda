@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, model, ModelSignal } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import {
   IonHeader,
   IonToolbar,
@@ -7,8 +8,9 @@ import {
   IonTitle,
   IonAvatar,
   IonMenuButton,
+  IonImg,
 } from '@ionic/angular/standalone';
-import { NavController } from '@ionic/angular';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -18,17 +20,15 @@ import { NavController } from '@ionic/angular';
     IonToolbar,
     IonButtons,
     IonBackButton,
-    IonTitle,
     IonAvatar,
     IonMenuButton,
+    IonImg,
   ],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   constructor(private navCtrl: NavController) {}
 
-  ngOnInit() {}
-
   irAlInicio() {
-    this.navCtrl.navigateRoot('/home'); // Te manda al inicio y limpia el historial
+    this.navCtrl.navigateRoot('/principal');
   }
 }

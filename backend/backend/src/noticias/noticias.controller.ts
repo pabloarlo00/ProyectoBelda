@@ -1,42 +1,68 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, Query } from '@nestjs/common';
-import { NoticiasService } from './noticias.service';
-import {CrearNoticiaDto} from "./dto/crear-noticia.dto";
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+  Query,
+  Patch,
+} from "@nestjs/common";
+import { NoticiasService } from "./noticias.service";
+import { CrearNoticiaDto } from "./dto/crear-noticia.dto";
 
-@Controller('noticias')
+import { CrearComentarioDto } from "./dto/crear-comentario.dto";
+
+@Controller("noticias")
 export class NoticiasController {
-    constructor(private readonly noticiasService: NoticiasService) {}
+  constructor(private readonly noticiasService: NoticiasService) {}
 
-    @Get()
-    getAll() {
-        return this.noticiasService.findAll(); }
+  @Get()
+  getAll() {
+    return this.noticiasService.findAll();
+  }
 
+  @Get("buscar")
+  search(@Query("q") q: string) {
+    return this.noticiasService.findByTerm(q);
+  }
 
+  @Get("secciones")
+  getSecciones() {
+    return this.noticiasService.getSecciones();
+  }
 
-    @Get('buscar')
-    search(@Query('q') q: string) {
-        return this.noticiasService.findByTerm(q); }
+  @Get("seccion/:nombre")
+  getBySeccion(@Param("nombre") nombre: string) {
+    return this.noticiasService.findBySeccion(nombre);
+  }
 
-    @Get('secciones')
-    getSecciones() {
-        return this.noticiasService.getSecciones(); }
+  @Get(":id")
+  getById(@Param("id") id: string) {
+    return this.noticiasService.findOne(id);
+  }
 
-    @Get('seccion/:nombre')
-    getBySeccion(@Param('nombre') nombre: string) {
-        return this.noticiasService.findBySeccion(nombre); }
+  @Post()
+  create(@Body() noticiaDto: CrearNoticiaDto) {
+    return this.noticiasService.create(noticiaDto);
+  }
 
-    @Get(':id')
-    getById(@Param('id') id: string) {
-        return this.noticiasService.findOne(id); }
+  @Patch("/:id/comentarios")
+  createComentario(
+    @Body() comentarioDto: CrearComentarioDto,
+    @Param("id") id: string,
+  ) {
+    return this.noticiasService.addComentario(id, comentarioDto);
+  }
 
-    @Post()
-    create(@Body() noticiaDto: CrearNoticiaDto) {
-        return this.noticiasService.create(noticiaDto); }
+  @Put(":id")
+  update(@Param("id") id: string, @Body() body: any) {
+    return this.noticiasService.update(id, body);
+  }
 
-    @Put(':id')
-    update(@Param('id') id: string, @Body() body: any) {
-        return this.noticiasService.update(id, body); }
-
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.noticiasService.delete(id); }
+  @Delete(":id")
+  remove(@Param("id") id: string) {
+    return this.noticiasService.delete(id);
+  }
 }
