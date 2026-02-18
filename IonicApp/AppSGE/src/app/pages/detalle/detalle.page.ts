@@ -35,8 +35,24 @@ import { Noticia } from 'src/app/common/noticia';
 import { ToastService } from 'src/app/services/toast';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { addIcons } from 'ionicons';
-import { imageOutline, searchOutline } from 'ionicons/icons';
-
+import { 
+  newspaperOutline, 
+  hardwareChipOutline, 
+  serverOutline, 
+  codeSlashOutline, 
+  terminalOutline, 
+  globeOutline, 
+  imageOutline, 
+  trendingUpOutline, 
+  settingsOutline, 
+  bookOutline, 
+  cameraOutline, 
+  chatbubblesOutline, 
+  gameControllerOutline, 
+  mailOutline,
+  personCircleOutline,
+  add
+} from 'ionicons/icons';
 @Component({
   selector: 'app-detalle',
   templateUrl: './detalle.page.html',
@@ -46,7 +62,6 @@ import { imageOutline, searchOutline } from 'ionicons/icons';
     CommonModule,
     FormsModule,
     HeaderComponent,
-    // AÑADIR AQUÍ TAMBIÉN
     IonContent,
     IonHeader,
     IonModal,
@@ -78,7 +93,26 @@ export class DetallePage {
   isModalOpen = false;
   nuevoComentario = { nombre: '', email: '', comentario: '' };
 
-  constructor() {}
+constructor() {
+    addIcons({
+      'newspaper-outline': newspaperOutline,
+      'hardware-chip-outline': hardwareChipOutline,
+      'server-outline': serverOutline,
+      'code-slash-outline': codeSlashOutline,
+      'terminal-outline': terminalOutline,
+      'globe-outline': globeOutline,
+      'image-outline': imageOutline,
+      'trending-up-outline': trendingUpOutline,
+      'settings-outline': settingsOutline,
+      'book-outline': bookOutline,
+      'camera-outline': cameraOutline,
+      'chatbubbles-outline': chatbubblesOutline,
+      'game-controller-outline': gameControllerOutline,
+      'mail-outline': mailOutline,
+      'person-circle-outline': personCircleOutline,
+      'add': add
+    });
+  }
 
   @Input() set id(noticiaId: string) {
     this.noticiaService.getNoticiaById(noticiaId).subscribe((data) => {
@@ -90,7 +124,8 @@ export class DetallePage {
     this.isModalOpen = open;
   }
 
-  confirmar(datosFormulario: any) {
+  confirmar() {
+    const datosFormulario:any = this.nuevoComentario;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (
@@ -121,7 +156,7 @@ export class DetallePage {
             next: (noticiaActualizada) => {
               this.noticia = noticiaActualizada;
               this.toastCtrl.show(
-                '¡Comentario guardado en el servidor!',
+                'Comentario guardado en el servidor!',
                 'success',
               );
             },
@@ -134,8 +169,6 @@ export class DetallePage {
             },
           });
       }
-
-      // Limpiamos el modelo para el próximo uso
       this.nuevoComentario = { nombre: '', email: '', comentario: '' };
     }
   }

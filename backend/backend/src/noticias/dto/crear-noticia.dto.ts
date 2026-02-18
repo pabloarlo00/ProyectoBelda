@@ -1,4 +1,20 @@
-import { IsString, IsArray, IsOptional, IsNotEmpty } from "class-validator";
+import { Type } from "class-transformer";
+import { IsString, IsArray, IsOptional, IsNotEmpty, IsObject, ValidateNested } from "class-validator";
+
+
+class SeccionDto {
+  @IsString()
+  @IsNotEmpty()
+  nombre: string;
+
+  @IsString()
+  @IsNotEmpty()
+  iconoWeb: string;
+
+  @IsString()
+  @IsNotEmpty()
+  iconoApp: string;
+}
 
 export class CrearNoticiaDto {
   @IsArray()
@@ -13,13 +29,10 @@ export class CrearNoticiaDto {
   @IsOptional()
   subtitulo: string;
 
-  @IsString()
-  @IsNotEmpty()
-  seccion: string;
-
-  @IsString()
-  @IsOptional()
-  iconoSeccion: string;
+@IsObject()
+  @ValidateNested()
+  @Type(() => SeccionDto)
+  seccion: SeccionDto;
 
   @IsString()
   @IsNotEmpty()

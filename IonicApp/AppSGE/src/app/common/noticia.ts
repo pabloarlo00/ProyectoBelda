@@ -3,8 +3,7 @@ export interface Noticia {
   imagenes: string[];
   titulo: string;
   subtitulo?: string;
-  seccion: string;
-  iconoSeccion?: string;
+  seccion: Seccion;
   autor: string;
   fecha?: Date | string;
   contenido: string;
@@ -16,3 +15,10 @@ export interface Comentario {
   email: string;
   comentario: string;
 }
+
+export interface Seccion {
+  nombre: string;
+    iconoWeb: string;
+    iconoApp: string;
+}
+

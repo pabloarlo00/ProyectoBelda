@@ -50,11 +50,11 @@ export class NoticiasService {
     return this.noticiaModel.findByIdAndDelete(id).exec();
   }
 
-  async getSecciones(): Promise<string[]> {
-    return this.noticiaModel.distinct("seccion").exec();
+  async getSecciones(): Promise<String[]> {
+    return this.noticiaModel.distinct("seccion.nombre").exec();
   }
 
-  async findBySeccion(seccion: string): Promise<Noticia[]> {
-    return this.noticiaModel.find({ seccion }).exec();
+  async findBySeccion(nombreSeccion: string): Promise<Noticia[]> {
+    return this.noticiaModel.find({"seccion.nombre": nombreSeccion}).exec();
   }
 }

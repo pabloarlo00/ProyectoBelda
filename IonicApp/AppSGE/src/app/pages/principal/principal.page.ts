@@ -49,7 +49,6 @@ export class PrincipalPage implements OnInit {
 
   constructor(
     private loadingCtrl: LoadingController,
-    private navCtrl: NavController,
   ) {}
 
   ngOnInit() {

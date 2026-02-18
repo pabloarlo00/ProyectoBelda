@@ -20,8 +20,8 @@
   <p class="text-muted">{{ noticia?.subtitulo }}</p>
 
   <ion-chip color="primary">
-    <i [class]="noticia?.iconoSeccion" class="bi"></i>
-    <ion-label class="ms-2">{{ noticia?.seccion }}</ion-label>
+    <ion-icon [name]="noticia?.seccion?.iconoApp" ></ion-icon>
+    <ion-label class="ms-2">{{ noticia?.seccion?.nombre }}</ion-label>
   </ion-chip>
 
   <div class="mt-2 mb-3">
@@ -62,52 +62,57 @@
     }
   </ion-list>
 
-  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
-    <ng-template>
-      <form #formulario="ngForm">
-        <ion-header>
-          <ion-toolbar color="primary">
-            <ion-buttons slot="start">
-              <ion-button (click)="cancelar()">Cancelar</ion-button>
-            </ion-buttons>
-            <ion-title>Nuevo Comentario</ion-title>
-            <ion-buttons slot="end">
-              <ion-button (click)="confirmar(formulario.value)" [strong]="true"
-                >Confirmar</ion-button
-              >
-            </ion-buttons>
-          </ion-toolbar>
-        </ion-header>
+<ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-buttons slot="start">
+            <ion-button (click)="cancelar()">CANCELAR</ion-button>
+          </ion-buttons>
+          <ion-title>Nuevo Comentario</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirmar()" [strong]="true">CONFIRMAR</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
 
-        <ion-content class="ion-padding">
-          <ion-item>
-            <ion-label position="stacked">Nombre</ion-label>
-            <ion-input
-              [(ngModel)]="nuevoComentario.nombre"
-              name="nombre"
-              type="text"
-              placeholder="Mínimo 3 caracteres"
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Email</ion-label>
-            <ion-input
-              [(ngModel)]="nuevoComentario.email"
-              name="email"
-              type="email"
-              placeholder="aa@aa.aa"
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-label position="stacked">Comentario</ion-label>
-            <ion-textarea
-              [(ngModel)]="nuevoComentario.comentario"
-              name="comentario"
-              placeholder="Mínimo 2 caracteres"
-            ></ion-textarea>
-          </ion-item>
-        </ion-content>
-      </form>
-    </ng-template>
-  </ion-modal>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-input
+            [(ngModel)]="nuevoComentario.nombre"
+            name="nombre"
+            type="text"
+            label="Nombre"
+            labelPlacement="stacked"
+            pattern=""
+            placeholder="Mínimo 3 caracteres"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input
+            [(ngModel)]="nuevoComentario.email"
+            name="email"
+            type="email"
+            label="Email"
+            labelPlacement="stacked"
+            placeholder="ejemplo@correo.com"
+            required
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-textarea
+            [(ngModel)]="nuevoComentario.comentario"
+            name="comentario"
+            label="Comentario"
+            labelPlacement="stacked"
+            placeholder="Escribe aquí tu opinión (mín. 2 caracteres)"
+            required
+          ></ion-textarea>
+        </ion-item>
+      </ion-content>
+  </ng-template>
+</ion-modal>
 </ion-content>

@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -24,98 +24,116 @@ export class FormularioNoticiaComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private location = inject(Location);
 
-  seccionesConIconos: { nombre: string; icono: string }[] = [];
+  seccionesConIconos: any[] = [];
   filtroIcono: string = '';
   crearNuevaSeccion: boolean = false;
-  iconosBootstrap: string[] = [
-    'bi-newspaper',
-    'bi-cpu',
-    'bi-database',
-    'bi-code-slash',
-    'bi-terminal',
-    'bi-laptop',
-    'bi-graph-up',
-    'bi-gear',
-    'bi-award',
-    'bi-book',
-    'bi-bug',
-    'bi-camera',
-    'bi-chat-dots',
-    'bi-cloud',
-    'bi-controller',
-    'bi-display',
-    'bi-envelope',
-    'bi-file-earmark-code',
-    'bi-globe',
-    'bi-hash',
-    'bi-image',
+
+  iconosData = [
+    { label: 'Noticias', web: 'bi-newspaper', app: 'newspaper-outline' },
+    { label: 'Tecnología', web: 'bi-cpu', app: 'hardware-chip-outline' },
+    { label: 'Base de Datos', web: 'bi-database', app: 'server-outline' },
+    { label: 'Código', web: 'bi-code-slash', app: 'code-slash-outline' },
+    { label: 'Terminal', web: 'bi-terminal', app: 'terminal-outline' },
+    { label: 'Mundo', web: 'bi-globe', app: 'globe-outline' },
+    { label: 'Imagen', web: 'bi-image', app: 'image-outline' },
+    { label: 'Gráficos', web: 'bi-graph-up', app: 'trending-up-outline' },
+    { label: 'Ajustes', web: 'bi-gear', app: 'settings-outline' },
+    { label: 'Educación', web: 'bi-book', app: 'book-outline' },
+    { label: 'Cámara', web: 'bi-camera', app: 'camera-outline' },
+    { label: 'Mensajes', web: 'bi-chat-dots', app: 'chatbubbles-outline' },
+    { label: 'Juegos', web: 'bi-controller', app: 'game-controller-outline' },
+    { label: 'Email', web: 'bi-envelope', app: 'mail-outline' }
   ];
+
   public form: FormGroup = this.fb.group({
     _id: [null],
     titulo: ['', [Validators.required, Validators.minLength(5)]],
     subtitulo: [''],
     contenido: ['', Validators.required],
     autor: ['', Validators.required],
-    seccion: ['', Validators.required],
-    iconoSeccion: ['', Validators.required],
+    seccion: this.fb.group({
+      nombre: ['', Validators.required],
+      iconoWeb: ['', Validators.required],
+      iconoApp: ['', Validators.required]
+    }),
     imagenes: this.fb.array([], [Validators.required, Validators.minLength(3)]),
   });
 
   get imagenes() {
     return this.form.get('imagenes') as FormArray;
   }
-
-  ngOnInit(): void {
+@Input() set id(noticiaId: string) {
+    if (noticiaId) {
+      this.cargarNoticia(noticiaId);
+    }
+  }
+ngOnInit(): void {
     this.cargarSecciones();
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.noticiaService.getOne(id).subscribe((noticia) => {
-        noticia.imagenes.forEach(() => this.agregarImagen());
-        this.form.patchValue(noticia);
-      });
-    } else {
+    
+    if (!this.form.get('_id')?.value) {
       for (let i = 0; i < 3; i++) {
         this.agregarImagen();
       }
     }
   }
 
+cargarNoticia(id: string) {
+  this.noticiaService.getOne(id).subscribe({
+    next: (noticia) => {
+      this.imagenes.clear();
+
+      if (noticia.imagenes && noticia.imagenes.length > 0) {
+        noticia.imagenes.forEach(() => this.agregarImagen());
+      } else {
+        for (let i = 0; i < 3; i++) this.agregarImagen();
+      }
+      this.form.patchValue(noticia);
+
+      console.log('Noticia cargada con éxito:', noticia);
+    },
+    error: (err) => {
+      console.error('Error al cargar la noticia:', err);
+    }
+  });
+}
   get iconosFiltrados() {
-    return this.iconosBootstrap.filter((icon) =>
-      icon.toLowerCase().includes(this.filtroIcono.toLowerCase()),
+    return this.iconosData.filter((icon) =>
+      icon.label.toLowerCase().includes(this.filtroIcono.toLowerCase()) ||
+      icon.web.toLowerCase().includes(this.filtroIcono.toLowerCase())
     );
   }
 
-  seleccionarIcono(nombre: string) {
-    this.form.patchValue({ iconoSeccion: nombre });
-    this.filtroIcono = ''; // Limpiamos la búsqueda tras elegir
+  seleccionarIcono(iconObj: any) {
+    this.form.get('seccion')?.patchValue({
+      iconoWeb: iconObj.web,
+      iconoApp: iconObj.app
+    });
+    this.filtroIcono = '';
   }
+
   cargarSecciones() {
     this.noticiaService.getAll().subscribe((noticias) => {
       const mapa = new Map();
       noticias.forEach((n) => {
-        if (!mapa.has(n.seccion)) {
-          mapa.set(n.seccion, n.iconoSeccion);
+        if (n.seccion && !mapa.has(n.seccion.nombre)) {
+          mapa.set(n.seccion.nombre, n.seccion);
         }
       });
-      this.seccionesConIconos = Array.from(mapa, ([nombre, icono]) => ({ nombre, icono }));
+      this.seccionesConIconos = Array.from(mapa.values());
     });
   }
 
   alCambiarSeccion(event: any) {
-    const seccionSeleccionada = event.target.value;
-    const encontrado = this.seccionesConIconos.find((s) => s.nombre === seccionSeleccionada);
+    const nombreSeccion = event.target.value;
+    const encontrado = this.seccionesConIconos.find((s) => s.nombre === nombreSeccion);
     if (encontrado) {
-      this.form.patchValue({ iconoSeccion: encontrado.icono });
+      this.form.get('seccion')?.patchValue(encontrado);
     }
   }
 
   toggleNuevaSeccion() {
     this.crearNuevaSeccion = !this.crearNuevaSeccion;
-    this.form.patchValue({
-      seccion: '',
-      iconoSeccion: '',
-    });
+    this.form.get('seccion')?.reset({ nombre: '', iconoWeb: '', iconoApp: '' });
   }
 
   agregarImagen(): void {
@@ -128,28 +146,20 @@ export class FormularioNoticiaComponent implements OnInit {
 
   guardar(): void {
     if (this.form.invalid) return;
-
     const noticiaParaEnviar = this.form.value;
+    if (!noticiaParaEnviar._id) delete noticiaParaEnviar._id;
 
-    if (!noticiaParaEnviar._id) {
-      delete noticiaParaEnviar._id;
-    }
+    const action = noticiaParaEnviar._id 
+      ? this.noticiaService.actualizar(noticiaParaEnviar._id, noticiaParaEnviar)
+      : this.noticiaService.crear(noticiaParaEnviar);
 
-    if (noticiaParaEnviar._id) {
-      this.noticiaService.actualizar(noticiaParaEnviar._id, noticiaParaEnviar).subscribe(() => {
-        this.router.navigate(['/']);
-      });
-    } else {
-      this.noticiaService.crear(noticiaParaEnviar).subscribe(() => {
-        this.router.navigate(['/']);
-      });
-    }
+    action.subscribe(() => this.router.navigate(['/']));
   }
 
   imgError(event: any) {
-    event.target.src = 'images/placeholder.png';
-    event.target.classList.add('opacity-50');
+    event.target.src = 'assets/images/placeholder.png';
   }
+
   volver(): void {
     this.location.back();
   }

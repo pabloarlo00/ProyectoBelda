@@ -1,7 +1,19 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
-@Schema()
+
+class Seccion {
+  @Prop({ required: true })
+  nombre: string;
+
+  @Prop({ required: true })
+  iconoWeb: string;
+
+  @Prop({ required: true })
+  iconoApp: string;
+}
+
+
 export class Comentario {
   @Prop({ type: String, required: true })
   nombre: string;
@@ -26,11 +38,8 @@ export class Noticia extends Document {
   @Prop({ type: String })
   subtitulo: string;
 
-  @Prop({ type: String, required: true })
-  seccion: string;
-
-  @Prop({ type: String })
-  iconoSeccion: string;
+  @Prop({ type: Seccion, required: true })
+  seccion: Seccion;
 
   @Prop({ type: String, required: true })
   autor: string;
@@ -41,7 +50,7 @@ export class Noticia extends Document {
   @Prop({ type: String, required: true })
   contenido: string;
 
-  @Prop({ type: [Object], default: [] })
+  @Prop({ type: Comentario, default: [] })
   comentarios: Comentario[];
 }
 
