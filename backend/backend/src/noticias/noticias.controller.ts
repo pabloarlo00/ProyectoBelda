@@ -19,8 +19,8 @@ export class NoticiasController {
   constructor(private readonly noticiasService: NoticiasService) {}
 
   @Get()
-  getAll() {
-    return this.noticiasService.findAll();
+  getAll(@Query("page") page: number = 1) {
+    return this.noticiasService.findAll(page);
   }
 
   @Get("buscar")
@@ -34,8 +34,11 @@ export class NoticiasController {
   }
 
   @Get("seccion/:nombre")
-  getBySeccion(@Param("nombre") nombre: string) {
-    return this.noticiasService.findBySeccion(nombre);
+  getBySeccion(
+    @Param("nombre") nombre: string,
+    @Query("page") page: number = 1,
+  ) {
+    return this.noticiasService.findBySeccion(nombre, page);
   }
 
   @Get(":id")

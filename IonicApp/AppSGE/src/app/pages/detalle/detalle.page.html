@@ -20,7 +20,7 @@
   <p class="text-muted">{{ noticia?.subtitulo }}</p>
 
   <ion-chip color="primary">
-    <ion-icon [name]="noticia?.seccion?.iconoApp" ></ion-icon>
+    <ion-icon [name]="noticia?.seccion?.iconoApp"></ion-icon>
     <ion-label class="ms-2">{{ noticia?.seccion?.nombre }}</ion-label>
   </ion-chip>
 
@@ -62,8 +62,8 @@
     }
   </ion-list>
 
-<ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
-  <ng-template>
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
       <ion-header>
         <ion-toolbar color="primary">
           <ion-buttons slot="start">
@@ -71,7 +71,9 @@
           </ion-buttons>
           <ion-title>Nuevo Comentario</ion-title>
           <ion-buttons slot="end">
-            <ion-button (click)="confirmar()" [strong]="true">CONFIRMAR</ion-button>
+            <ion-button (click)="confirmar()" [strong]="true"
+              >CONFIRMAR</ion-button
+            >
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
@@ -84,7 +86,7 @@
             type="text"
             label="Nombre"
             labelPlacement="stacked"
-            pattern=""
+            pattern=".{3,}"
             placeholder="Mínimo 3 caracteres"
             required
           ></ion-input>
@@ -97,6 +99,7 @@
             type="email"
             label="Email"
             labelPlacement="stacked"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
             placeholder="ejemplo@correo.com"
             required
           ></ion-input>
@@ -108,11 +111,12 @@
             name="comentario"
             label="Comentario"
             labelPlacement="stacked"
+            pattern=".{2,}"
             placeholder="Escribe aquí tu opinión (mín. 2 caracteres)"
             required
           ></ion-textarea>
         </ion-item>
       </ion-content>
-  </ng-template>
-</ion-modal>
+    </ng-template>
+  </ion-modal>
 </ion-content>

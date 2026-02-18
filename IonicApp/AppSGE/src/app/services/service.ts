@@ -12,8 +12,8 @@ export class Service {
 
   constructor() {}
 
-  getAllNotices(): Observable<Noticia[]> {
-    return this.http.get<Noticia[]>(environment.baseUrl + '/');
+  getAllNotices(page: number): Observable<Noticia[]> {
+    return this.http.get<Noticia[]>(`${environment.baseUrl}/?page=${page}`);
   }
 
   buscarNoticias(termino: string): Observable<Noticia[]> {
@@ -31,5 +31,15 @@ export class Service {
       `${environment.baseUrl}/${id}/comentarios`,
       comentario,
     );
+  }
+
+  getNoticiasBySeccion(seccion: string, page: any): Observable<Noticia[]> {
+    return this.http.get<Noticia[]>(
+      `${environment.baseUrl}/seccion/${seccion}?page=${page}`,
+    );
+  }
+
+  getSecciones(): Observable<string[]> {
+    return this.http.get<string[]>(`${environment.baseUrl}/secciones`);
   }
 }

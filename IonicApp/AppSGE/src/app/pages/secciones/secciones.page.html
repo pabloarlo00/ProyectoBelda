@@ -1,0 +1,29 @@
+<app-header></app-header>
+<ion-toolbar>
+  <ion-segment
+    [value]="categoria"
+    (ionChange)="segmentChanged($event)"
+    scrollable="true"
+  >
+    @for (sec of seccionesDisponibles; track sec) {
+    <ion-segment-button [value]="sec">
+      <ion-label>{{ sec }}</ion-label>
+    </ion-segment-button>
+    }
+  </ion-segment>
+</ion-toolbar>
+<ion-content class="ion-padding">
+  <ion-list>
+    @for (noticia of notices; track noticia._id) {
+    <app-card [item]="noticia"></app-card>
+    }
+  </ion-list>
+
+  <ion-infinite-scroll threshold="150px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="crescent"
+      loadingText="Cargando más noticias..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

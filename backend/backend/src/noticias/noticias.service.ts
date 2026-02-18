@@ -9,8 +9,16 @@ export class NoticiasService {
     @InjectModel(Noticia.name) private noticiaModel: Model<Noticia>,
   ) {}
 
-  async findAll(): Promise<Noticia[]> {
-    return this.noticiaModel.find().exec();
+  async findAll(page: number = 1): Promise<Noticia[]> {
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    return this.noticiaModel
+      .find()
+      .skip(skip)
+      .limit(limit)
+      .sort({ fecha: -1 })
+      .exec();
   }
 
   async findOne(id: string): Promise<Noticia> {
@@ -54,7 +62,18 @@ export class NoticiasService {
     return this.noticiaModel.distinct("seccion.nombre").exec();
   }
 
-  async findBySeccion(nombreSeccion: string): Promise<Noticia[]> {
-    return this.noticiaModel.find({"seccion.nombre": nombreSeccion}).exec();
+  async findBySeccion(
+    nombreSeccion: string,
+    page: number = 1,
+  ): Promise<Noticia[]> {
+    const limit = 10;
+    const skip = (page - 1) * limit;
+
+    return this.noticiaModel
+      .find({ "seccion.nombre": nombreSeccion })
+      .skip(skip)
+      .limit(limit)
+      .sort({ fecha: -1 })
+      .exec();
   }
 }

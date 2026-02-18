@@ -20,6 +20,7 @@ import { Service } from 'src/app/services/service';
 import { Noticia } from 'src/app/common/noticia';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CardComponent } from 'src/app/components/card/card.component';
 @Component({
   selector: 'app-principal',
   templateUrl: './principal.page.html',
@@ -29,16 +30,9 @@ import { RouterLink } from '@angular/router';
     IonContent,
     CommonModule,
     FormsModule,
-    IonCard,
-    IonCardHeader,
-    IonBadge,
-    IonNote,
-    IonCardTitle,
-    IonCardContent,
-    IonText,
     IonInfiniteScroll,
     IonInfiniteScrollContent,
-    RouterLink,
+    CardComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -46,44 +40,42 @@ export class PrincipalPage implements OnInit {
   private noticiaService: Service = inject(Service);
 
   notices: Noticia[] = [];
-
-  constructor(
-    private loadingCtrl: LoadingController,
-  ) {}
+  currentPage = 1;
+  constructor(private loadingCtrl: LoadingController) {}
 
   ngOnInit() {
     this.loadAllNotices();
   }
 
   async loadAllNotices(event?: InfiniteScrollCustomEvent) {
-    const loading = await this.loadingCtrl.create({
-      message: 'Cargando noticias...',
-      spinner: 'bubbles',
-    });
-    await loading.present();
+    let loading: HTMLIonLoadingElement | null = null;
+    if (!event) {
+      loading = await this.loadingCtrl.create({
+        message: 'Cargando noticias...',
+        spinner: 'bubbles',
+      });
+      await loading.present();
+    }
 
-    this.noticiaService.getAllNotices().subscribe({
+    this.noticiaService.getAllNotices(this.currentPage).subscribe({
       next: (noticias) => {
-        console.log('Noticias cargadas:', noticias);
-        loading.dismiss();
+        if (loading) loading.dismiss(); // [cite: 241, 273]
+
         this.notices.push(...noticias);
         event?.target.complete();
-        if (event) {
+        if (noticias.length === 0 && event) {
           event.target.disabled = true;
         }
       },
       error: (error) => {
-        console.error('Error al cargar las noticias:', error);
-        loading.dismiss();
-      },
-
-      complete: () => {
-        console.log('Carga de noticias completada');
+        if (loading) loading.dismiss();
+        console.error('Error:', error);
       },
     });
   }
 
   loadMore(event: InfiniteScrollCustomEvent) {
+    this.currentPage++;
     this.loadAllNotices(event);
   }
 }

@@ -14,52 +14,8 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  @for (item of notices; track item._id) {
-  <ion-card
-    [routerLink]="['/detalle', item._id]"
-    class="mb-4 shadow-sm border-0"
-  >
-    @if (item.imagenes && item.imagenes.length > 0) {
-    <swiper-container pagination="true" class="bg-dark">
-      @for (foto of item.imagenes; track $index) {
-      <swiper-slide class="slide-full">
-        <ion-img
-          [src]="foto"
-          [alt]="item.titulo"
-          class="vw-100 object-fit-cover"
-          style="height: 250px"
-        >
-        </ion-img>
-      </swiper-slide>
-      }
-    </swiper-container>
-    }
-
-    <ion-card-header>
-      <ion-grid class="p-0">
-        <ion-row class="ion-align-items-center">
-          <ion-col>
-            <ion-badge color="secondary">{{ item.seccion.nombre }}</ion-badge>
-          </ion-col>
-          <ion-col class="ion-text-end">
-            <ion-note class="small"
-              >{{ item.fecha | date:'dd/MM/yyyy' }}</ion-note
-            >
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-
-      <ion-card-title class="fw-bold">{{ item.titulo }}</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <div class="mt-3 pt-2 border-top">
-        <ion-text color="medium">
-          Por: <strong class="text-dark">{{ item.autor }}</strong>
-        </ion-text>
-      </div>
-    </ion-card-content>
-  </ion-card>
+  @for (noticia of notices; track noticia._id) {
+  <app-card [item]="noticia"></app-card>
   }
 
   <ion-infinite-scroll (ionInfinite)="loadMore($event)">

@@ -35,23 +35,23 @@ import { Noticia } from 'src/app/common/noticia';
 import { ToastService } from 'src/app/services/toast';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { addIcons } from 'ionicons';
-import { 
-  newspaperOutline, 
-  hardwareChipOutline, 
-  serverOutline, 
-  codeSlashOutline, 
-  terminalOutline, 
-  globeOutline, 
-  imageOutline, 
-  trendingUpOutline, 
-  settingsOutline, 
-  bookOutline, 
-  cameraOutline, 
-  chatbubblesOutline, 
-  gameControllerOutline, 
+import {
+  newspaperOutline,
+  hardwareChipOutline,
+  serverOutline,
+  codeSlashOutline,
+  terminalOutline,
+  globeOutline,
+  imageOutline,
+  trendingUpOutline,
+  settingsOutline,
+  bookOutline,
+  cameraOutline,
+  chatbubblesOutline,
+  gameControllerOutline,
   mailOutline,
   personCircleOutline,
-  add
+  add,
 } from 'ionicons/icons';
 @Component({
   selector: 'app-detalle',
@@ -93,7 +93,7 @@ export class DetallePage {
   isModalOpen = false;
   nuevoComentario = { nombre: '', email: '', comentario: '' };
 
-constructor() {
+  constructor() {
     addIcons({
       'newspaper-outline': newspaperOutline,
       'hardware-chip-outline': hardwareChipOutline,
@@ -110,7 +110,7 @@ constructor() {
       'game-controller-outline': gameControllerOutline,
       'mail-outline': mailOutline,
       'person-circle-outline': personCircleOutline,
-      'add': add
+      add: add,
     });
   }
 
@@ -125,7 +125,7 @@ constructor() {
   }
 
   confirmar() {
-    const datosFormulario:any = this.nuevoComentario;
+    const datosFormulario: any = this.nuevoComentario;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (

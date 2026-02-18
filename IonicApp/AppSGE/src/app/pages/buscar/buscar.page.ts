@@ -21,6 +21,7 @@ import { HeaderComponent } from 'src/app/components/header/header.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { addIcons } from 'ionicons'; // Importante
 import { searchOutline, imageOutline } from 'ionicons/icons';
+import { CardComponent } from 'src/app/components/card/card.component';
 @Component({
   selector: 'app-buscar',
   templateUrl: './buscar.page.html',
@@ -33,11 +34,8 @@ import { searchOutline, imageOutline } from 'ionicons/icons';
     FormsModule,
     IonSearchbar,
     HeaderComponent,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardContent,
     IonIcon,
+    CardComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
