@@ -20,8 +20,21 @@ import { CrearComentarioDto } from "./dto/crear-comentario.dto";
 @Controller("noticias")
 export class NoticiasController {
   constructor(private readonly noticiasService: NoticiasService) {}
-@Get()
-async getAll(@Query("page") page: number = 1) {
+
+  @Get("all-admin")
+  async getAllAdmin() {
+    try {
+      const data = await this.noticiasService.findAllAdmin();
+      return {
+        status: true,
+        noticias: data,
+      };
+    } catch (e) {
+      throw new BadRequestException({ status: false, message: e.message });
+    }
+  }
+  @Get()
+  async getAll(@Query("page") page: number = 1) {
     try {
       const data = await this.noticiasService.findAll(page);
       return {
@@ -36,7 +49,7 @@ async getAll(@Query("page") page: number = 1) {
     }
   }
 
-@Get("buscar")
+  @Get("buscar")
   async search(@Query("q") q: string) {
     try {
       const data = await this.noticiasService.findByTerm(q);
@@ -52,7 +65,7 @@ async getAll(@Query("page") page: number = 1) {
     }
   }
 
-@Get("secciones")
+  @Get("secciones")
   async getSecciones() {
     try {
       const data = await this.noticiasService.getSecciones();
@@ -68,7 +81,7 @@ async getAll(@Query("page") page: number = 1) {
     }
   }
 
-@Get("seccion/:nombre")
+  @Get("seccion/:nombre")
   async getBySeccion(
     @Param("nombre") nombre: string,
     @Query("page") page: number = 1,
@@ -87,11 +100,11 @@ async getAll(@Query("page") page: number = 1) {
     }
   }
 
-@Get(":id")
+  @Get(":id")
   async getById(@Param("id") id: string) {
     try {
       const data = await this.noticiasService.findOne(id);
-      if (!data) throw new NotFoundException('Noticia no encontrada');
+      if (!data) throw new NotFoundException("Noticia no encontrada");
       return {
         status: true,
         noticia: data,
@@ -105,13 +118,13 @@ async getAll(@Query("page") page: number = 1) {
     }
   }
 
-@Post()
+  @Post()
   async create(@Body() noticiaDto: CrearNoticiaDto) {
     try {
       const data = await this.noticiasService.create(noticiaDto);
       return {
         status: true,
-        message: 'Noticia creada con éxito',
+        message: "Noticia creada con éxito",
         noticia: data,
       };
     } catch (e) {
@@ -122,7 +135,7 @@ async getAll(@Query("page") page: number = 1) {
     }
   }
 
-@Patch("/:id/comentarios")
+  @Patch("/:id/comentarios")
   async createComentario(
     @Body() comentarioDto: CrearComentarioDto,
     @Param("id") id: string,
@@ -131,7 +144,7 @@ async getAll(@Query("page") page: number = 1) {
       const data = await this.noticiasService.addComentario(id, comentarioDto);
       return {
         status: true,
-        message: 'Comentario añadido con éxito',
+        message: "Comentario añadido con éxito",
         noticiaActualizada: data,
       };
     } catch (e) {
@@ -142,13 +155,13 @@ async getAll(@Query("page") page: number = 1) {
     }
   }
 
-@Put(":id")
+  @Put(":id")
   async update(@Param("id") id: string, @Body() body: any) {
     try {
       const data = await this.noticiasService.update(id, body);
       return {
         status: true,
-        message: 'Noticia actualizada con éxito',
+        message: "Noticia actualizada con éxito",
         noticia: data,
       };
     } catch (e) {
@@ -159,13 +172,13 @@ async getAll(@Query("page") page: number = 1) {
     }
   }
 
-@Delete(":id")
+  @Delete(":id")
   async remove(@Param("id") id: string) {
     try {
       await this.noticiasService.delete(id);
       return {
         status: true,
-        message: 'Noticia eliminada correctamente',
+        message: "Noticia eliminada correctamente",
       };
     } catch (e) {
       throw new InternalServerErrorException({

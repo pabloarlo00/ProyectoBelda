@@ -5,9 +5,10 @@
     (ionChange)="segmentChanged($event)"
     scrollable="true"
   >
-    @for (sec of seccionesDisponibles; track sec) {
-    <ion-segment-button [value]="sec">
-      <ion-label>{{ sec }}</ion-label>
+    @for (sec of seccionesDisponibles; track sec.nombre) {
+    <ion-segment-button [value]="sec.nombre">
+      <ion-label>{{ sec.nombre }}</ion-label>
+      <ion-icon [name]="sec.iconoApp"></ion-icon>
     </ion-segment-button>
     }
   </ion-segment>
@@ -26,4 +27,9 @@
     >
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button routerLink="/buscar">
+      <ion-icon name="search"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

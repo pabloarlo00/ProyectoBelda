@@ -1,4 +1,3 @@
-// create-comentario.dto.ts
 import { IsString, IsEmail, MinLength } from "class-validator";
 
 export class CrearComentarioDto {

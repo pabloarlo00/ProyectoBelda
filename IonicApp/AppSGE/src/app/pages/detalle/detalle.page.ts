@@ -3,7 +3,6 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   inject,
   Input,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -52,6 +51,10 @@ import {
   mailOutline,
   personCircleOutline,
   add,
+  logoFacebook,
+  logoInstagram,
+  logoTwitter,
+  shareSocial,
 } from 'ionicons/icons';
 @Component({
   selector: 'app-detalle',
@@ -110,14 +113,20 @@ export class DetallePage {
       'game-controller-outline': gameControllerOutline,
       'mail-outline': mailOutline,
       'person-circle-outline': personCircleOutline,
+      'share-social': shareSocial,
+      'logo-facebook': logoFacebook,
+      'logo-twitter': logoTwitter,
+      'logo-instagram': logoInstagram,
       add: add,
     });
   }
 
   @Input() set id(noticiaId: string) {
-    this.noticiaService.getNoticiaById(noticiaId).subscribe((res: ResNoticia) => {
-      this.noticia = res.noticia;
-    });
+    this.noticiaService
+      .getNoticiaById(noticiaId)
+      .subscribe((res: ResNoticia) => {
+        this.noticia = res.noticia;
+      });
   }
 
   setOpen(open: boolean) {
@@ -153,12 +162,18 @@ export class DetallePage {
         this.noticiaService
           .postComentario(idNoticia, datosRecibidos)
           .subscribe({
-            next: (res: ResNoticia) => {
-              this.noticia = res.noticia;
+            next: (res: any) => {
+              if (res.noticiaActualizada) {
+                this.noticia = res.noticiaActualizada;
+              } else if (res.noticia) {
+                this.noticia = res.noticia;
+              }
+
               this.toastCtrl.show(
                 'Comentario guardado en el servidor!',
                 'success',
               );
+              this.nuevoComentario = { nombre: '', email: '', comentario: '' };
             },
             error: (err) => {
               this.toastCtrl.show(
@@ -169,7 +184,6 @@ export class DetallePage {
             },
           });
       }
-      this.nuevoComentario = { nombre: '', email: '', comentario: '' };
     }
   }
 }

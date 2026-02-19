@@ -5,22 +5,16 @@ import {
   InfiniteScrollCustomEvent,
   IonContent,
   LoadingController,
-  IonCard,
-  IonCardHeader,
-  IonBadge,
-  IonNote,
-  IonCardTitle,
-  IonCardContent,
-  IonText,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
-  NavController,
 } from '@ionic/angular/standalone';
 import { Service } from 'src/app/services/service';
 import { Noticia, ResNoticia } from 'src/app/common/noticia';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CardComponent } from 'src/app/components/card/card.component';
+import { addIcons } from 'ionicons';
+import { search } from 'ionicons/icons';
 @Component({
   selector: 'app-principal',
   templateUrl: './principal.page.html',
@@ -33,6 +27,7 @@ import { CardComponent } from 'src/app/components/card/card.component';
     IonInfiniteScroll,
     IonInfiniteScrollContent,
     CardComponent,
+    RouterLink,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -41,7 +36,11 @@ export class PrincipalPage implements OnInit {
 
   notices: Noticia[] = [];
   currentPage = 1;
-  constructor(private loadingCtrl: LoadingController) {}
+  constructor(private loadingCtrl: LoadingController) {
+    addIcons({
+      search,
+    });
+  }
 
   ngOnInit() {
     this.loadAllNotices();
@@ -59,17 +58,15 @@ export class PrincipalPage implements OnInit {
 
     this.noticiaService.getAllNotices(this.currentPage).subscribe({
       next: (res: ResNoticia) => {
-        if (loading) loading.dismiss(); // [cite: 241, 273]
+        if (loading) loading.dismiss();
 
-        if (res.noticias){
-            this.notices.push(...res.noticias);
-            event?.target.complete();
-        if (res.noticias.length === 0 && event) {
-          event.target.disabled = true;
+        if (res.noticias) {
+          this.notices.push(...res.noticias);
+          event?.target.complete();
+          if (res.noticias.length < 5 && event) {
+            event.target.disabled = true;
+          }
         }
-        }
-
-
       },
       error: (error) => {
         if (loading) loading.dismiss();

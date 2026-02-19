@@ -1,7 +1,11 @@
-<ion-menu side="start" menuId="primerMenu" contentId="principal">
+<ion-menu side="end" menuId="primerMenu" contentId="principal">
   <ion-header>
     <ion-toolbar color="primary">
-      <ion-title>Menú Principal</ion-title>
+      <div class="d-flex justify-content-center align-items-center m-2">
+        <ion-avatar>
+          <ion-img src="assets/icon/iconoApp.png" alt="Logo"></ion-img>
+        </ion-avatar>
+      </div>
     </ion-toolbar>
   </ion-header>
 
@@ -9,8 +13,18 @@
     <ion-list>
       @for (component of componentes; track component.nombre) {
         <ion-menu-toggle>
-          <ion-item [routerLink]="component.ruta" detail="true" lines="none">
-            <ion-icon slot="start" [name]="component.icono"></ion-icon>
+          <ion-item
+            [routerLink]="component.ruta"
+            [queryParams]="component.queryParams"
+            detail="true"
+            lines="none"
+          >
+            <ion-avatar
+              slot="start"
+              class="d-flex justify-content-center align-items-center bg-light"
+            >
+              <ion-icon [name]="component.icono" color="primary"></ion-icon>
+            </ion-avatar>
             <ion-label>{{ component.nombre }}</ion-label>
           </ion-item>
         </ion-menu-toggle>

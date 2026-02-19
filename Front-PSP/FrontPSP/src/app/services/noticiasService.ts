@@ -7,21 +7,20 @@ import { Noticia, ResNoticia } from '../common/noticia';
   providedIn: 'root',
 })
 export class NoticiaService {
-  // Inyección funcional (estándar en Angular 17/18)
   private readonly http = inject(HttpClient);
 
   private readonly API_URL = 'http://localhost:3000/noticias';
 
   getAll(): Observable<ResNoticia> {
-    return this.http.get<ResNoticia>(this.API_URL);
+    return this.http.get<ResNoticia>(`${this.API_URL}/all-admin`);
   }
 
   getOne(id: string): Observable<ResNoticia> {
     return this.http.get<ResNoticia>(`${this.API_URL}/${id}`);
   }
 
-  getSecciones(): Observable<ResNoticia> {
-    return this.http.get<ResNoticia>(`${this.API_URL}/secciones`);
+  getSecciones(): Observable<any> {
+    return this.http.get<any>(`${this.API_URL}/secciones`);
   }
 
   crear(noticia: Noticia): Observable<ResNoticia> {

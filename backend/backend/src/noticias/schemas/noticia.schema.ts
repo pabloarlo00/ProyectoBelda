@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
-
+@Schema({ _id: false })
 class Seccion {
   @Prop({ required: true })
   nombre: string;
@@ -12,7 +12,6 @@ class Seccion {
   @Prop({ required: true })
   iconoApp: string;
 }
-
 
 export class Comentario {
   @Prop({ type: String, required: true })

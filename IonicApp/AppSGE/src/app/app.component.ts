@@ -9,6 +9,19 @@ import {
   homeOutline,
   arrowBackOutline,
   menuOutline,
+  bookOutline,
+  cameraOutline,
+  chatbubblesOutline,
+  codeSlashOutline,
+  gameControllerOutline,
+  globeOutline,
+  hardwareChipOutline,
+  imageOutline,
+  mailOutline,
+  serverOutline,
+  settingsOutline,
+  terminalOutline,
+  trendingUpOutline,
 } from 'ionicons/icons';
 register();
 @Component({
@@ -24,6 +37,19 @@ export class AppComponent {
       'home-outline': homeOutline,
       'arrow-back-outline': arrowBackOutline,
       'menu-outline': menuOutline,
+      'hardware-chip-outline': hardwareChipOutline,
+      'server-outline': serverOutline,
+      'code-slash-outline': codeSlashOutline,
+      'terminal-outline': terminalOutline,
+      'globe-outline': globeOutline,
+      'image-outline': imageOutline,
+      'trending-up-outline': trendingUpOutline,
+      'settings-outline': settingsOutline,
+      'book-outline': bookOutline,
+      'camera-outline': cameraOutline,
+      'chatbubbles-outline': chatbubblesOutline,
+      'game-controller-outline': gameControllerOutline,
+      'mail-outline': mailOutline,
     });
   }
 }

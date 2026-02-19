@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -9,11 +8,6 @@ import { RouterLink } from '@angular/router';
 import {
   IonCard,
   IonCardHeader,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonBadge,
-  IonNote,
   IonCardTitle,
   IonCardContent,
   IonText,
@@ -27,15 +21,10 @@ import { Noticia } from 'src/app/common/noticia';
   imports: [
     IonCard,
     IonCardHeader,
-    IonGrid,
-    IonRow,
-    IonCol,
-    IonBadge,
-    IonNote,
     IonCardTitle,
     IonCardContent,
     IonText,
-    DatePipe,
+
     RouterLink,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

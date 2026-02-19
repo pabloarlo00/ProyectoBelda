@@ -1,140 +1,257 @@
-<div class="container mt-5 mb-5">
-  <div class="card border-0 shadow-sm rounded-4">
-    <div class="card-header bg-primary text-white py-3">
-      <h3 class="mb-0">
-        <i class="bi" [ngClass]="form.get('_id')?.value ? 'bi-pencil-square' : 'bi-plus-circle'"></i>
-        {{ form.get('_id')?.value ? ' Editar Noticia' : ' Nueva Noticia' }}
-      </h3>
-    </div>
-
-    <div class="card-body p-4">
-      <form [formGroup]="form" (ngSubmit)="guardar()">
-        
-        <div class="mb-3">
-          <label class="form-label fw-bold">Título</label>
-          <input type="text" formControlName="titulo" class="form-control" [class.is-invalid]="form.get('titulo')?.invalid && form.get('titulo')?.touched" placeholder="Escribe un título impactante..."/>
-          <div class="invalid-feedback">El título debe tener al menos 5 caracteres.</div>
+<div class="container-fluid mt-4 mb-5">
+  <div class="row">
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-header bg-primary text-white py-3">
+          <h3 class="mb-0">
+            <i
+              class="bi"
+              [ngClass]="form.get('_id')?.value ? 'bi-pencil-square' : 'bi-plus-circle'"
+            ></i>
+            {{ form.get('_id')?.value ? ' Editar Noticia' : ' Nueva Noticia' }}
+          </h3>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label fw-bold">Subtítulo</label>
-          <input type="text" formControlName="subtitulo" class="form-control" placeholder="Resumen breve de la noticia"/>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-md-4">
-            <label class="form-label fw-bold">Autor</label>
-            <input type="text" formControlName="autor" class="form-control" placeholder="Nombre del redactor"/>
-          </div>
-
-          <div class="col-md-4" formGroupName="seccion">
-            <label class="form-label fw-bold d-flex justify-content-between">
-              Sección
-              <a href="javascript:void(0)" (click)="toggleNuevaSeccion()" class="small text-decoration-none">
-                {{ crearNuevaSeccion ? 'Ver existentes' : '+ Crear nueva' }}
-              </a>
-            </label>
-
-            @if (!crearNuevaSeccion) {
-            <select formControlName="nombre" class="form-select" (change)="alCambiarSeccion($event)">
-              <option value="" disabled selected>Selecciona sección...</option>
-              @for (sec of seccionesConIconos; track sec.nombre) {
-                <option [value]="sec.nombre">{{ sec.nombre }}</option>
-              }
-            </select>
-            } @else {
-            <div class="input-group">
-              <span class="input-group-text bg-primary text-white"><i class="bi bi-plus-lg"></i></span>
-              <input type="text" formControlName="nombre" class="form-control" placeholder="Nombre de la sección..."/>
+        <div class="card-body p-4">
+          <form [formGroup]="form" (ngSubmit)="guardar()">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Título</label>
+              <input
+                type="text"
+                formControlName="titulo"
+                class="form-control"
+                [class.is-invalid]="form.get('titulo')?.invalid && form.get('titulo')?.touched"
+                placeholder="Escribe un título impactante..."
+              />
             </div>
-            }
-          </div>
 
-          <div class="col-md-4">
-            <label class="form-label fw-bold">Icono (Web & App)</label>
-
-            @if (!crearNuevaSeccion) {
-            <div class="input-group">
-              <span class="input-group-text bg-light border-end-0">
-                <i [class]="form.get('seccion.iconoWeb')?.value || 'bi-tag'"></i>
-              </span>
-              <input type="text" [value]="form.get('seccion.iconoWeb')?.value ? 'Mapeado (Web/App)' : ''" class="form-control bg-light border-start-0" readonly placeholder="Icono asignado"/>
+            <div class="mb-3">
+              <label class="form-label fw-bold">Subtítulo</label>
+              <input
+                type="text"
+                formControlName="subtitulo"
+                class="form-control"
+                placeholder="Resumen breve de la noticia"
+              />
             </div>
-            } @else {
-            <div class="dropdown">
-              <div class="input-group" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="input-group-text bg-white border-end-0">
-                  <i [class]="form.get('seccion.iconoWeb')?.value || 'bi-search'"></i>
-                </span>
-                <input type="text" class="form-control border-start-0" placeholder="Buscar icono..." [(ngModel)]="filtroIcono" [ngModelOptions]="{ standalone: true }"/>
+
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-bold">Autor</label>
+                <input
+                  type="text"
+                  formControlName="autor"
+                  class="form-control"
+                  placeholder="Nombre del redactor"
+                />
               </div>
-              <ul class="dropdown-menu w-100 p-2 shadow border-0 mt-1" [class.show]="filtroIcono.length > 0" style="max-height: 200px; overflow-y: auto">
-                <div class="row g-2 m-0">
-                  @for (icon of iconosFiltrados; track icon.web) {
-                  <div class="col-3 text-center">
-                    <button type="button" (click)="seleccionarIcono(icon)" class="btn btn-outline-primary btn-sm w-100 border-0" [title]="icon.label">
-                      <i [class]="icon.web" class="fs-4"></i>
-                    </button>
+
+              <div class="col-md-4" formGroupName="seccion">
+                <label class="form-label fw-bold d-flex justify-content-between">
+                  Sección
+                  <a
+                    href="javascript:void(0)"
+                    (click)="toggleNuevaSeccion()"
+                    class="small text-decoration-none"
+                  >
+                    {{ crearNuevaSeccion ? 'Ver existentes' : '+ Crear nueva' }}
+                  </a>
+                </label>
+                @if (!crearNuevaSeccion) {
+                  <select
+                    formControlName="nombre"
+                    class="form-select"
+                    (change)="alCambiarSeccion($event)"
+                  >
+                    <option value="" disabled selected>Selecciona sección...</option>
+                    @for (sec of seccionesConIconos; track sec.nombre) {
+                      <option [value]="sec.nombre">{{ sec.nombre }}</option>
+                    }
+                  </select>
+                } @else {
+                  <input
+                    type="text"
+                    formControlName="nombre"
+                    class="form-control"
+                    placeholder="Nueva sección..."
+                  />
+                }
+              </div>
+
+              <div class="col-md-4">
+                <label class="form-label fw-bold">Icono (Web y App)</label>
+
+                @if (!crearNuevaSeccion) {
+                  <div class="input-group">
+                    <span class="input-group-text bg-light border-end-0">
+                      <i [class]="form.get('seccion.iconoWeb')?.value || 'bi-tag'"></i>
+                    </span>
+                    <input
+                      type="text"
+                      [value]="form.get('seccion.iconoWeb')?.value ? 'Mapeado (Web/App)' : ''"
+                      class="form-control bg-light border-start-0"
+                      readonly
+                      placeholder="Icono asignado"
+                    />
                   </div>
-                  } @empty {
-                  <li class="small text-muted text-center py-2">No hay resultados</li>
-                  }
-                </div>
-              </ul>
-            </div>
-            }
-          </div>
-        </div>
+                } @else {
+                  <div class="dropdown">
+                    <div class="input-group">
+                      <span class="input-group-text bg-white border-end-0">
+                        <i [class]="form.get('seccion.iconoWeb')?.value || 'bi-search'"></i>
+                      </span>
+                      <input
+                        type="text"
+                        class="form-control border-start-0"
+                        placeholder="Buscar icono..."
+                        [(ngModel)]="filtroIcono"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                    </div>
 
-        <div class="mb-4">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <label class="form-label fw-bold mb-0">Galería de Imágenes (URLs)</label>
-            <button type="button" (click)="agregarImagen()" class="btn btn-sm btn-outline-primary rounded-pill">
-              <i class="bi bi-plus-lg"></i> Añadir otra imagen
-            </button>
-          </div>
-
-          <div formArrayName="imagenes">
-            @for (control of imagenes.controls; track $index) {
-            <div class="card mb-3 border-0 bg-light shadow-sm">
-              <div class="card-body p-2">
-                <div class="input-group">
-                  <span class="input-group-text bg-white border-end-0">
-                    <i class="bi bi-link-45deg text-muted"></i>
-                  </span>
-                  <input type="text" [formControlName]="$index" class="form-control border-start-0" placeholder="https://enlace-a-tu-foto.jpg"/>
-                  @if (imagenes.length > 1) {
-                  <button class="btn btn-white text-danger border" type="button" (click)="quitarImagen($index)">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                  }
-                </div>
-                @if (control.value) {
-                <div class="mt-2 text-center">
-                  <img [src]="control.value" class="img-thumbnail animate__fadeIn shadow-sm" style="max-height: 120px; object-fit: cover" (error)="imgError($event)"/>
-                </div>
+                    @if (filtroIcono.length > 0) {
+                      <ul
+                        class="dropdown-menu w-100 p-2 shadow border-0 mt-1 show"
+                        style="max-height: 200px; overflow-y: auto; display: block"
+                      >
+                        <div class="row g-2 m-0">
+                          @for (icon of iconosFiltrados; track icon.web) {
+                            <div class="col-3 text-center">
+                              <button
+                                type="button"
+                                (click)="seleccionarIcono(icon)"
+                                class="btn btn-outline-primary btn-sm w-100 border-0"
+                              >
+                                <i [class]="icon.web" class="fs-4"></i>
+                              </button>
+                            </div>
+                          } @empty {
+                            <li class="small text-muted text-center py-2">No hay resultados</li>
+                          }
+                        </div>
+                      </ul>
+                    }
+                  </div>
                 }
               </div>
             </div>
-            }
+
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label fw-bold mb-0">Galería de Imágenes (URLs)</label>
+                <button
+                  type="button"
+                  (click)="agregarImagen()"
+                  class="btn btn-sm btn-outline-primary rounded-pill"
+                >
+                  <i class="bi bi-plus-lg"></i> Añadir otra
+                </button>
+              </div>
+
+              <div formArrayName="imagenes">
+                @for (control of imagenes.controls; track $index) {
+                  <div class="card mb-2 border-0 bg-light shadow-sm">
+                    <div class="card-body p-2">
+                      <div class="input-group">
+                        <input
+                          type="text"
+                          [formControlName]="$index"
+                          class="form-control form-control-sm"
+                          placeholder="URL de la imagen..."
+                        />
+                        @if (imagenes.length > 1) {
+                          <button
+                            class="btn btn-sm btn-outline-danger"
+                            type="button"
+                            (click)="quitarImagen($index)"
+                          >
+                            <i class="bi bi-trash"></i>
+                          </button>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold">Contenido de la Noticia</label>
+              <textarea formControlName="contenido" class="form-control" rows="5"></textarea>
+            </div>
+
+            <div class="d-flex gap-2 pt-3 border-top">
+              <button
+                type="submit"
+                [disabled]="form.invalid"
+                class="btn btn-primary px-4 shadow-sm"
+              >
+                {{ form.get('_id')?.value ? 'Actualizar' : 'Publicar' }}
+              </button>
+              <button type="button" (click)="volver()" class="btn btn-light border px-4">
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+      <div class="sticky-top pt-2" style="top: 20px; z-index: 10">
+        <p class="text-center text-muted fw-bold small mb-2">
+          <i class="bi bi-eye me-1"></i> VISTA PREVIA EN APP
+        </p>
+
+        <div class="iphone-x">
+          <div class="side-buttons"><div></div></div>
+          <div class="screen">
+            <div class="ionic-header">
+              <i class="bi bi-chevron-left"></i>
+              <span class="small fw-bold">Detalle Noticia</span>
+              <i class="bi bi-share"></i>
+            </div>
+
+            <div class="app-content">
+              <div class="main-img-container">
+                <img
+                  [src]="imagenes.at(0).value || 'images/placeholder.png'"
+                  class="img-fluid main-img"
+                  (error)="imgError($event)"
+                />
+                <div class="category-badge">
+                  <i [class]="form.get('seccion.iconoWeb')?.value" class="me-1"></i>
+                  {{ form.get('seccion.nombre')?.value || 'Sección' }}
+                </div>
+              </div>
+
+              <div class="p-3">
+                <h1 class="app-title">{{ form.get('titulo')?.value || 'Título de la noticia' }}</h1>
+
+                <div class="d-flex align-items-center mb-3 text-muted" style="font-size: 0.75rem">
+                  <div class="author-circle me-2">
+                    {{ form.get('autor')?.value?.charAt(0) || 'A' }}
+                  </div>
+                  <div>
+                    <div class="fw-bold text-dark">
+                      {{ form.get('autor')?.value || 'Autor Desconocido' }}
+                    </div>
+                    <div>Hoy • 2 min lectura</div>
+                  </div>
+                </div>
+
+                <p class="app-subtitle">{{ form.get('subtitulo')?.value }}</p>
+                <div class="app-body">
+                  {{
+                    form.get('contenido')?.value ||
+                      'Escribe el contenido para previsualizarlo aquí...'
+                  }}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
-        <div class="mb-4">
-          <label class="form-label fw-bold">Contenido de la Noticia</label>
-          <textarea formControlName="contenido" class="form-control" rows="6" placeholder="Escribe aquí el cuerpo completo de la noticia..."></textarea>
-        </div>
-
-        <div class="d-flex gap-2 pt-3 border-top">
-          <button type="submit" [disabled]="form.invalid" class="btn btn-primary px-4 shadow-sm">
-            <i class="bi bi-cloud-arrow-up me-1"></i>
-            {{ form.get('_id')?.value ? 'Actualizar Cambios' : 'Publicar Noticia' }}
-          </button>
-          <button type="button" (click)="volver()" class="btn btn-light text-secondary border px-4">
-            Cancelar
-          </button>
-        </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

@@ -11,120 +11,123 @@
 
   <div class="row">
     @for (noticia of noticias; track noticia._id) {
-    <div class="col-md-6 col-lg-4 mb-4">
-      <article class="card h-100 news-card border-0 shadow-sm">
-        <div class="news-image-box">
-          @if (noticia.imagenes && noticia.imagenes.length > 0) {
-          <div
-            [id]="'carousel-' + noticia._id"
-            class="carousel slide carousel-fade h-100"
-            data-bs-ride="false"
-          >
-            @if (noticia.imagenes.length > 1) {
-            <div class="carousel-indicators">
-              @for (img of noticia.imagenes; track $index) {
-              <button
-                type="button"
-                [attr.data-bs-target]="'#carousel-' + noticia._id"
-                [attr.data-bs-slide-to]="$index"
-                [class.active]="$index === 0"
-                aria-current="true"
-              ></button>
-              }
-            </div>
-            }
+      <div class="col-md-6 col-lg-4 mb-4">
+        <article class="card h-100 news-card border-0 shadow-sm">
+          <div class="news-image-box">
+            @if (noticia.imagenes && noticia.imagenes.length > 0) {
+              <div
+                [id]="'carousel-' + noticia._id"
+                class="carousel slide carousel-fade h-100"
+                data-bs-ride="false"
+              >
+                @if (noticia.imagenes.length > 1) {
+                  <div class="carousel-indicators">
+                    @for (img of noticia.imagenes; track $index) {
+                      <button
+                        type="button"
+                        [attr.data-bs-target]="'#carousel-' + noticia._id"
+                        [attr.data-bs-slide-to]="$index"
+                        [class.active]="$index === 0"
+                        aria-current="true"
+                      ></button>
+                    }
+                  </div>
+                }
 
-            <div class="carousel-inner h-100">
-              @for (img of noticia.imagenes; track $index) {
-              <div class="carousel-item h-100" [class.active]="$index === 0">
-                <img
-                  [src]="img"
-                  class="d-block w-100 h-100 object-fit-cover"
-                  [alt]="noticia.titulo"
-                />
+                <div class="carousel-inner h-100">
+                  @for (img of noticia.imagenes; track $index) {
+                    <div class="carousel-item h-100" [class.active]="$index === 0">
+                      <img
+                        [src]="img"
+                        class="d-block w-100 h-100 object-fit-cover"
+                        [alt]="noticia.titulo"
+                      />
+                    </div>
+                  }
+                </div>
+
+                @if (noticia.imagenes.length > 1) {
+                  <button
+                    class="carousel-control-prev"
+                    type="button"
+                    [attr.data-bs-target]="'#carousel-' + noticia._id"
+                    data-bs-slide="prev"
+                  >
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                  </button>
+                  <button
+                    class="carousel-control-next"
+                    type="button"
+                    [attr.data-bs-target]="'#carousel-' + noticia._id"
+                    data-bs-slide="next"
+                  >
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                  </button>
+                }
+
+                <span class="image-count-badge">
+                  <i class="bi bi-images me-1"></i>{{ noticia.imagenes.length }}
+                </span>
               </div>
-              }
+            } @else {
+              <div class="no-image-placeholder h-100">
+                <i class="bi bi-newspaper display-2 text-secondary"></i>
+              </div>
+            }
+          </div>
+
+          <div class="card-body d-flex flex-column">
+            <div class="d-flex align-items-center mb-2">
+              <i [class]="noticia.seccion.iconoWeb" class="text-primary me-2 fs-5"></i>
+              <span class="text-uppercase fw-bold ls-1 small text-primary">{{
+                noticia.seccion.nombre
+              }}</span>
             </div>
 
-            @if (noticia.imagenes.length > 1) {
-            <button
-              class="carousel-control-prev"
-              type="button"
-              [attr.data-bs-target]="'#carousel-' + noticia._id"
-              data-bs-slide="prev"
+            <h3 class="card-title h4 fw-bold text-dark mb-2">{{ noticia.titulo }}</h3>
+            <h6 class="card-subtitle mb-3 text-secondary lh-base">{{ noticia.subtitulo }}</h6>
+            <div
+              class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top small text-muted"
             >
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Anterior</span>
+              <span><i class="bi bi-person-circle me-1"></i> {{ noticia.autor }}</span>
+              <span
+                ><i class="bi bi-calendar3 me-1"></i> {{ noticia.fecha | date: 'mediumDate' }}</span
+              >
+            </div>
+          </div>
+
+          <div class="card-footer bg-white border-0 d-flex gap-2 pb-3 px-3">
+            <button
+              [routerLink]="['/editar', noticia._id]"
+              class="btn btn-outline-dark btn-sm flex-grow-1 rounded-pill"
+            >
+              <i class="bi bi-pencil me-1"></i> Editar
             </button>
             <button
-              class="carousel-control-next"
-              type="button"
-              [attr.data-bs-target]="'#carousel-' + noticia._id"
-              data-bs-slide="next"
+              class="btn btn-outline-danger btn-sm rounded-pill"
+              data-bs-toggle="modal"
+              data-bs-target="#deleteModal"
+              (click)="prepararBorrado(noticia)"
             >
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Siguiente</span>
+              <i class="bi bi-trash3 me-1"></i> Borrar
             </button>
-            }
-
-            <span class="image-count-badge">
-              <i class="bi bi-images me-1"></i>{{ noticia.imagenes.length }}
-            </span>
           </div>
-          } @else {
-          <div class="no-image-placeholder h-100">
-            <i class="bi bi-newspaper display-2 text-secondary"></i>
-          </div>
-          }
-        </div>
-
-        <div class="card-body d-flex flex-column">
-          <div class="d-flex align-items-center mb-2">
-            <i [class]="noticia.seccion.iconoWeb" class="text-primary me-2 fs-5"></i>
-            <span class="text-uppercase fw-bold ls-1 small text-primary">{{
-              noticia.seccion.nombre
-            }}</span>
-          </div>
-
-          <h3 class="card-title h4 fw-bold text-dark mb-2">{{ noticia.titulo }}</h3>
-          <h6 class="card-subtitle mb-3 text-secondary lh-base">{{ noticia.subtitulo }}</h6>
-          <div
-            class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top small text-muted"
-          >
-            <span><i class="bi bi-person-circle me-1"></i> {{ noticia.autor }}</span>
-            <span
-              ><i class="bi bi-calendar3 me-1"></i> {{ noticia.fecha | date : 'mediumDate' }}</span
-            >
-          </div>
-        </div>
-
-        <div class="card-footer bg-white border-0 d-flex gap-2 pb-3 px-3">
-          <button
-            [routerLink]="['/editar', noticia._id]"
-            class="btn btn-outline-dark btn-sm flex-grow-1 rounded-pill"
-          >
-            <i class="bi bi-pencil me-1"></i> Editar
-          </button>
-          <button
-            class="btn btn-outline-danger btn-sm rounded-pill"
-            data-bs-toggle="modal"
-            data-bs-target="#deleteModal"
-            (click)="prepararBorrado(noticia)"
-          >
-            <i class="bi bi-trash3 me-1"></i> Borrar
-          </button>
-        </div>
-      </article>
-    </div>
-    } @empty {
-    <div class="col-12 text-center py-5">
-      <div class="empty-state-icon mb-4">
-        <i class="bi bi-journals display-1 text-light-emphasis"></i>
+        </article>
       </div>
-      <h2 class="text-muted">Parece que no hay noticias todavía</h2>
-      <p class="text-secondary">Sé el primero en informar al mundo.</p>
-      <button routerLink="/nueva" class="btn btn-primary mt-3">Redactar mi primera noticia</button>
-    </div>
+    } @empty {
+      <div class="col-12 text-center py-5">
+        <div class="py-5">
+          <div class="spinner-grow text-primary" role="status" style="width: 3rem; height: 3rem">
+            <span class="visually-hidden">Cargando...</span>
+          </div>
+          <div class="mt-4">
+            <h4 class="text-primary fw-bold">Buscando Noticias</h4>
+            <p class="text-muted small">Estamos trayendo las últimas novedades para ti...</p>
+          </div>
+        </div>
+      </div>
     }
   </div>
 

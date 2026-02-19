@@ -8,17 +8,39 @@ import {
   IonSegmentButton,
   IonLabel,
   IonList,
-
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   InfiniteScrollCustomEvent,
+  IonIcon,
+  IonFab,
+  IonFabButton,
 } from '@ionic/angular/standalone';
 import { Service } from 'src/app/services/service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { Noticia, ResNoticia } from 'src/app/common/noticia';
+import { Noticia, ResNoticia, Seccion } from 'src/app/common/noticia';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { CardComponent } from 'src/app/components/card/card.component';
+import {
+  add,
+  bookOutline,
+  cameraOutline,
+  chatbubblesOutline,
+  codeSlashOutline,
+  gameControllerOutline,
+  globeOutline,
+  hardwareChipOutline,
+  imageOutline,
+  mailOutline,
+  newspaperOutline,
+  personCircleOutline,
+  search,
+  serverOutline,
+  settingsOutline,
+  terminalOutline,
+  trendingUpOutline,
+} from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-secciones',
@@ -38,6 +60,10 @@ import { CardComponent } from 'src/app/components/card/card.component';
     IonInfiniteScrollContent,
     HeaderComponent,
     CardComponent,
+    IonIcon,
+    IonFab,
+    IonFabButton,
+    RouterLink,
   ],
 })
 export class SeccionesPage implements OnInit {
@@ -48,21 +74,39 @@ export class SeccionesPage implements OnInit {
   @Input() categoria!: string;
 
   notices: Noticia[] = [];
-  seccionesDisponibles: any[] = [];
+  seccionesDisponibles: Seccion[] = [];
   currentPage = 1;
-  constructor() {}
+  constructor() {
+    addIcons({
+      'newspaper-outline': newspaperOutline,
+      'hardware-chip-outline': hardwareChipOutline,
+      'server-outline': serverOutline,
+      'code-slash-outline': codeSlashOutline,
+      'terminal-outline': terminalOutline,
+      'globe-outline': globeOutline,
+      'image-outline': imageOutline,
+      'trending-up-outline': trendingUpOutline,
+      'settings-outline': settingsOutline,
+      'book-outline': bookOutline,
+      'camera-outline': cameraOutline,
+      'chatbubbles-outline': chatbubblesOutline,
+      'game-controller-outline': gameControllerOutline,
+      'mail-outline': mailOutline,
+      'person-circle-outline': personCircleOutline,
+      search: search,
+      add: add,
+    });
+  }
 
   ngOnInit() {
     this.noticiaService.getSecciones().subscribe({
       next: (res: ResNoticia) => {
-        if(res.secciones){
-        this.seccionesDisponibles = res.secciones;
+        if (res.secciones) {
+          this.seccionesDisponibles = res.secciones;
           if (!this.categoria && res.secciones.length > 0) {
-          this.updateQueryParam(res.secciones[0]);
+            this.updateQueryParam(res.secciones[0].nombre);
+          }
         }
-        }
-
-
       },
       error: (err) => console.error('Error cargando secciones', err),
     });
@@ -94,14 +138,14 @@ export class SeccionesPage implements OnInit {
         next: (res: ResNoticia) => {
           if (!event) loading.dismiss();
 
-          if(res.status && res.noticias){
-          this.notices.push(...res.noticias);
+          if (res.status && res.noticias) {
+            this.notices.push(...res.noticias);
 
-          event?.target.complete();
+            event?.target.complete();
 
-          if (res.noticias?.length < 10 && event) {
-            event.target.disabled = true;
-          }
+            if (res.noticias?.length < 10 && event) {
+              event.target.disabled = true;
+            }
           }
         },
         error: (err) => {

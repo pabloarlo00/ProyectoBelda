@@ -7,7 +7,6 @@ import { Noticia, ResNoticia } from '../../common/noticia';
 @Component({
   selector: 'app-lista-noticias',
   standalone: true,
-  // Importamos CommonModule para los pipes como | date y RouterModule para los enlaces
   imports: [CommonModule, RouterModule],
   templateUrl: './lista-noticias.html',
   styleUrl: './lista-noticias.css',
@@ -16,7 +15,6 @@ export class ListaNoticiasComponent implements OnInit {
   noticias: Noticia[] = [];
   noticiaSeleccionada: Noticia | null = null;
 
-  // Inyectamos el servicio de forma moderna
   private noticiaService = inject(NoticiaService);
 
   ngOnInit(): void {
@@ -26,15 +24,11 @@ export class ListaNoticiasComponent implements OnInit {
   cargarNoticias(): void {
     this.noticiaService.getAll().subscribe({
       next: (res: ResNoticia) => {
-        if(res.noticias){
-        this.noticias = res.noticias;
+        if (res.noticias) {
+          this.noticias = res.noticias;
         }
-
-        console.log('Noticias cargadas con éxito:', this.noticias);
       },
-      error: (err) => {
-        console.error('Error al conectar con la API:', err);
-      },
+      error: (err) => console.error('Error al cargar todo:', err),
     });
   }
 

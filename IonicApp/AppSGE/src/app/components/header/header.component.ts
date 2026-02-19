@@ -1,15 +1,13 @@
-import { Component, model, ModelSignal } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import {
   IonHeader,
   IonToolbar,
   IonButtons,
   IonBackButton,
-  IonTitle,
   IonAvatar,
   IonMenuButton,
   IonImg,
-
 } from '@ionic/angular/standalone';
 
 @Component({
