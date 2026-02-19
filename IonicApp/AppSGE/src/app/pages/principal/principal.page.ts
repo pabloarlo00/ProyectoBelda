@@ -17,7 +17,7 @@ import {
   NavController,
 } from '@ionic/angular/standalone';
 import { Service } from 'src/app/services/service';
-import { Noticia } from 'src/app/common/noticia';
+import { Noticia, ResNoticia } from 'src/app/common/noticia';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CardComponent } from 'src/app/components/card/card.component';
@@ -58,14 +58,18 @@ export class PrincipalPage implements OnInit {
     }
 
     this.noticiaService.getAllNotices(this.currentPage).subscribe({
-      next: (noticias) => {
+      next: (res: ResNoticia) => {
         if (loading) loading.dismiss(); // [cite: 241, 273]
 
-        this.notices.push(...noticias);
-        event?.target.complete();
-        if (noticias.length === 0 && event) {
+        if (res.noticias){
+            this.notices.push(...res.noticias);
+            event?.target.complete();
+        if (res.noticias.length === 0 && event) {
           event.target.disabled = true;
         }
+        }
+
+
       },
       error: (error) => {
         if (loading) loading.dismiss();

@@ -31,7 +31,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { Service } from 'src/app/services/service';
-import { Noticia } from 'src/app/common/noticia';
+import { Noticia, ResNoticia } from 'src/app/common/noticia';
 import { ToastService } from 'src/app/services/toast';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { addIcons } from 'ionicons';
@@ -115,8 +115,8 @@ export class DetallePage {
   }
 
   @Input() set id(noticiaId: string) {
-    this.noticiaService.getNoticiaById(noticiaId).subscribe((data) => {
-      this.noticia = data;
+    this.noticiaService.getNoticiaById(noticiaId).subscribe((res: ResNoticia) => {
+      this.noticia = res.noticia;
     });
   }
 
@@ -153,8 +153,8 @@ export class DetallePage {
         this.noticiaService
           .postComentario(idNoticia, datosRecibidos)
           .subscribe({
-            next: (noticiaActualizada) => {
-              this.noticia = noticiaActualizada;
+            next: (res: ResNoticia) => {
+              this.noticia = res.noticia;
               this.toastCtrl.show(
                 'Comentario guardado en el servidor!',
                 'success',

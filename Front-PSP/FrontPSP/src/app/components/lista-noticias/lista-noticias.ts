@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NoticiaService } from '../../services/noticiasService';
-import { Noticia } from '../../common/noticia';
+import { Noticia, ResNoticia } from '../../common/noticia';
 
 @Component({
   selector: 'app-lista-noticias',
@@ -25,8 +25,11 @@ export class ListaNoticiasComponent implements OnInit {
 
   cargarNoticias(): void {
     this.noticiaService.getAll().subscribe({
-      next: (data) => {
-        this.noticias = data;
+      next: (res: ResNoticia) => {
+        if(res.noticias){
+        this.noticias = res.noticias;
+        }
+
         console.log('Noticias cargadas con éxito:', this.noticias);
       },
       error: (err) => {

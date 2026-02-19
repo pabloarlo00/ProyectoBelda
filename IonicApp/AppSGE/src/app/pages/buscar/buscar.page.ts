@@ -16,7 +16,7 @@ import {
   IonIcon,
 } from '@ionic/angular/standalone';
 import { Service } from 'src/app/services/service';
-import { Noticia } from 'src/app/common/noticia';
+import { Noticia, ResNoticia } from 'src/app/common/noticia';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { addIcons } from 'ionicons'; // Importante
@@ -55,8 +55,11 @@ export class BuscarPage {
       const termino = valor.toLowerCase();
 
       this.noticiaService.buscarNoticias(termino).subscribe({
-        next: (data) => {
-          this.resultados = data;
+        next: (res: ResNoticia) => {
+          if(res.noticias){
+            this.resultados = res.noticias;
+          }
+
         },
         error: (err) => console.error(err),
       });

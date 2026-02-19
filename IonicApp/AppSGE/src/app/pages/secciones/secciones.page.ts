@@ -3,28 +3,20 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   IonContent,
-  IonHeader,
-  IonTitle,
   IonToolbar,
-  IonButtons,
-  IonMenuButton,
   IonSegment,
   IonSegmentButton,
   IonLabel,
   IonList,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonNote,
-  IonCardContent,
+
   IonInfiniteScroll,
   IonInfiniteScrollContent,
   InfiniteScrollCustomEvent,
 } from '@ionic/angular/standalone';
 import { Service } from 'src/app/services/service';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { LoadingController } from '@ionic/angular';
-import { Noticia } from 'src/app/common/noticia';
+import { Noticia, ResNoticia } from 'src/app/common/noticia';
 import { HeaderComponent } from 'src/app/components/header/header.component';
 import { CardComponent } from 'src/app/components/card/card.component';
 
@@ -62,12 +54,15 @@ export class SeccionesPage implements OnInit {
 
   ngOnInit() {
     this.noticiaService.getSecciones().subscribe({
-      next: (secciones) => {
-        this.seccionesDisponibles = secciones;
-        // Si entramos sin categoría, navegamos a la primera disponible [cite: 529]
-        if (!this.categoria && secciones.length > 0) {
-          this.updateQueryParam(secciones[0]);
+      next: (res: ResNoticia) => {
+        if(res.secciones){
+        this.seccionesDisponibles = res.secciones;
+          if (!this.categoria && res.secciones.length > 0) {
+          this.updateQueryParam(res.secciones[0]);
         }
+        }
+
+
       },
       error: (err) => console.error('Error cargando secciones', err),
     });
@@ -96,21 +91,22 @@ export class SeccionesPage implements OnInit {
     this.noticiaService
       .getNoticiasBySeccion(this.categoria, this.currentPage)
       .subscribe({
-        next: (res) => {
-          if (!event) loading.dismiss(); // [cite: 241]
+        next: (res: ResNoticia) => {
+          if (!event) loading.dismiss();
 
-          this.notices.push(...res); // Concatenación con spread operator [cite: 242]
+          if(res.status && res.noticias){
+          this.notices.push(...res.noticias);
 
-          event?.target.complete(); // Finalizar animación de scroll [cite: 243, 277]
+          event?.target.complete();
 
-          // Desactivar scroll si no hay más datos [cite: 245, 283]
-          if (res.length < 10 && event) {
+          if (res.noticias?.length < 10 && event) {
             event.target.disabled = true;
+          }
           }
         },
         error: (err) => {
           if (!event) loading.dismiss();
-          console.error('Error fetching data:', err); // [cite: 252, 652]
+          console.error('Error fetching data:', err);
         },
       });
   }
@@ -125,7 +121,7 @@ export class SeccionesPage implements OnInit {
   private updateQueryParam(cat: string) {
     this.router.navigate([], {
       queryParams: { categoria: cat },
-      queryParamsHandling: 'merge', // [cite: 543]
+      queryParamsHandling: 'merge',
     });
   }
 

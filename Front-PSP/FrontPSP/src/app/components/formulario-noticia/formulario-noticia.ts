@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NoticiaService } from '../../services/noticiasService';
+import { ResNoticia } from '../../common/noticia';
 
 @Component({
   selector: 'app-formulario-noticia',
@@ -79,17 +80,19 @@ ngOnInit(): void {
 
 cargarNoticia(id: string) {
   this.noticiaService.getOne(id).subscribe({
-    next: (noticia) => {
+    next: (res: ResNoticia) => {
       this.imagenes.clear();
-
-      if (noticia.imagenes && noticia.imagenes.length > 0) {
-        noticia.imagenes.forEach(() => this.agregarImagen());
+      if(res.noticia){
+      if (res.noticia.imagenes && res.noticia.imagenes.length > 0) {
+        res.noticia.imagenes.forEach(() => this.agregarImagen());
       } else {
         for (let i = 0; i < 3; i++) this.agregarImagen();
       }
-      this.form.patchValue(noticia);
+      this.form.patchValue(res.noticia);
 
-      console.log('Noticia cargada con éxito:', noticia);
+      console.log('Noticia cargada con éxito:', res.noticia);
+      }
+
     },
     error: (err) => {
       console.error('Error al cargar la noticia:', err);
@@ -112,13 +115,16 @@ cargarNoticia(id: string) {
   }
 
   cargarSecciones() {
-    this.noticiaService.getAll().subscribe((noticias) => {
+    this.noticiaService.getAll().subscribe((res: ResNoticia) => {
       const mapa = new Map();
-      noticias.forEach((n) => {
+      if(res.noticias){
+      res.noticias.forEach((n) => {
         if (n.seccion && !mapa.has(n.seccion.nombre)) {
           mapa.set(n.seccion.nombre, n.seccion);
         }
       });
+      }
+
       this.seccionesConIconos = Array.from(mapa.values());
     });
   }
