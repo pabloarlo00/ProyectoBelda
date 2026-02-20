@@ -11,7 +11,7 @@ export interface ComentarioInterface {
   fecha?: Date;
 }
 
-export interface NoticiaInterface {
+export interface Noticia {
   _id?: string;
   imagenes: string[];
   titulo: string;

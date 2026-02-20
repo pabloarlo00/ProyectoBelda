@@ -1,56 +1,34 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { Schema } from "mongoose";
 
-@Schema({ _id: false })
-class Seccion {
-  @Prop({ required: true })
-  nombre: string;
+const SeccionSchema = new Schema(
+  {
+    nombre: { type: String, required: true },
+    iconoWeb: { type: String, required: true },
+    iconoApp: { type: String, required: true },
+  },
+  { _id: false },
+);
 
-  @Prop({ required: true })
-  iconoWeb: string;
+const ComentarioSchema = new Schema({
+  nombre: { type: String, required: true },
+  email: { type: String, required: true },
+  comentario: { type: String, required: true },
+  fecha: { type: Date, default: Date.now },
+});
 
-  @Prop({ required: true })
-  iconoApp: string;
-}
-
-export class Comentario {
-  @Prop({ type: String, required: true })
-  nombre: string;
-
-  @Prop({ type: String, required: true })
-  email: string;
-
-  @Prop({ type: String, required: true })
-  comentario: string;
-
-  @Prop({ type: Date, default: Date.now })
-  fecha: Date;
-}
-@Schema()
-export class Noticia extends Document {
-  @Prop({ type: [String] })
-  imagenes: string[];
-
-  @Prop({ type: String, required: true })
-  titulo: string;
-
-  @Prop({ type: String })
-  subtitulo: string;
-
-  @Prop({ type: Seccion, required: true })
-  seccion: Seccion;
-
-  @Prop({ type: String, required: true })
-  autor: string;
-
-  @Prop({ type: Date, default: Date.now })
-  fecha: Date;
-
-  @Prop({ type: String, required: true })
-  contenido: string;
-
-  @Prop({ type: Comentario, default: [] })
-  comentarios: Comentario[];
-}
-
-export const NoticiaSchema = SchemaFactory.createForClass(Noticia);
+export const NoticiaSchema = new Schema(
+  {
+    imagenes: [{ type: String }],
+    titulo: { type: String, required: true, index: true },
+    subtitulo: { type: String },
+    seccion: { type: SeccionSchema, required: true },
+    autor: { type: String, required: true },
+    fecha: { type: Date, default: Date.now },
+    contenido: { type: String, required: true },
+    comentarios: { type: [ComentarioSchema], default: [] },
+  },
+  {
+    timestamps: true,
+    versionKey: false,
+  },
+);

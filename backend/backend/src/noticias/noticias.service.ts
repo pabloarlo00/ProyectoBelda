@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { Noticia } from "./schemas/noticia.schema";
 
+import { Noticia } from "./interfaces/noticias.interface";
+import { CrearComentarioDto } from "./dto/crear-comentario.dto";
+import { CrearNoticiaDto } from "./dto/crear-noticia.dto";
 @Injectable()
 export class NoticiasService {
-  constructor(
-    @InjectModel(Noticia.name) private noticiaModel: Model<Noticia>,
-  ) {}
+  constructor(@InjectModel("Noticia") private noticiaModel: Model<Noticia>) {}
 
   async findAllAdmin(): Promise<Noticia[]> {
     return this.noticiaModel.find().sort({ fecha: -1 }).exec();
@@ -47,8 +47,8 @@ export class NoticiasService {
       .exec();
   }
 
-  async create(data: any): Promise<Noticia> {
-    const nueva = new this.noticiaModel(data);
+  async create(crearNoticiaDto: CrearNoticiaDto): Promise<Noticia> {
+    const nueva = new this.noticiaModel(crearNoticiaDto);
     return nueva.save();
   }
 
@@ -61,8 +61,10 @@ export class NoticiasService {
       )
       .exec();
   }
-  async update(id: string, data: any): Promise<Noticia> {
-    return this.noticiaModel.findByIdAndUpdate(id, data, { new: true }).exec();
+  async update(id: string, crearNoticiaDto: CrearNoticiaDto): Promise<Noticia> {
+    return this.noticiaModel
+      .findByIdAndUpdate(id, crearNoticiaDto, { new: true })
+      .exec();
   }
 
   async delete(id: string): Promise<any> {

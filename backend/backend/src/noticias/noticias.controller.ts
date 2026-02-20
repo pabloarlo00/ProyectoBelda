@@ -119,9 +119,9 @@ export class NoticiasController {
   }
 
   @Post()
-  async create(@Body() noticiaDto: CrearNoticiaDto) {
+  async create(@Body() CrearNoticiaDto: CrearNoticiaDto) {
     try {
-      const data = await this.noticiasService.create(noticiaDto);
+      const data = await this.noticiasService.create(CrearNoticiaDto);
       return {
         status: true,
         message: "Noticia creada con éxito",
